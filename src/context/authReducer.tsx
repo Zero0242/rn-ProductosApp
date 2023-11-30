@@ -2,10 +2,10 @@ import { Usuario } from "../interfaces/appInterfaces"
 
 
 export interface AuthState {
-    status: 'checking' | 'logged-in' | 'signed-out'
-    token: string | null
-    errorMessage: string
-    user: Usuario | null
+    errorMessage: string,
+    token: string | null,
+    usuario: Usuario | null;
+    status: 'checking' | 'logged-in' | 'signed-out';
 }
 
 type AuthAction =
@@ -24,7 +24,7 @@ export const authReducer = (state: AuthState, action: AuthAction): AuthState => 
                 ...state,
                 errorMessage: action.payload,
                 token: null,
-                user: null,
+                usuario: null,
                 status: 'signed-out',
             }
         case "removeError":
@@ -35,7 +35,7 @@ export const authReducer = (state: AuthState, action: AuthAction): AuthState => 
         case "signUp":
             return {
                 ...state,
-                user: action.payload.user,
+                usuario: action.payload.user,
                 token: action.payload.token,
                 status: 'logged-in',
                 errorMessage: '',
@@ -45,7 +45,7 @@ export const authReducer = (state: AuthState, action: AuthAction): AuthState => 
             return {
                 ...state,
                 token: null,
-                user: null,
+                usuario: null,
                 status: 'signed-out',
             }
         default:
