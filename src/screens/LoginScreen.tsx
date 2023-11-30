@@ -65,6 +65,7 @@ export const LoginScreen = ({ navigation }: Props) => {
           <View style={loginStyles.buttonContainer}>
             <TouchableOpacity
               activeOpacity={0.8}
+              onPress={onLogin}
               style={loginStyles.button}
             >
               <Text style={loginStyles.buttonText}>Login</Text>

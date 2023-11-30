@@ -47,5 +47,21 @@ export const loginStyles = StyleSheet.create({
         alignItems: 'flex-end',
         marginTop: 10,
     },
+    buttonReturn: {
+        flexDirection:'row',
+        position: 'absolute',
+        top: 50,
+        left: 20,
+        borderWidth:1,
+        borderColor:'white',
+        paddingHorizontal:10,
+        paddingVertical:5,
+        borderRadius:100
+    },
+    backArrow:{
+        color:'white',
+        height:18,
+        marginRight:10,
+    }
 
 })
