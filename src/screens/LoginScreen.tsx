@@ -1,5 +1,5 @@
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useContext } from 'react'
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useContext, useEffect } from 'react'
 import { Background, WhiteLogo } from '../components'
 import { loginStyles } from '../theme/loginTheme'
 import { useForm } from '../hooks/useForm'
@@ -12,12 +12,20 @@ interface Props extends NativeStackScreenProps<any, any> { }
 
 export const LoginScreen = ({ navigation }: Props) => {
   const { email, password, onChange, form } = useForm({ email: '', password: '' })
-  const { signIn } = useContext(AuthContext)
+  const { signIn, errorMessage, removeError } = useContext(AuthContext)
 
   const onLogin = () => {
     signIn({ correo: email, password })
     Keyboard.dismiss()
   }
+
+  useEffect(() => {
+    if (errorMessage.length === 0) return
+    Alert.alert('Error de autenticación', errorMessage,
+      [{ text: 'ok', onPress: removeError }]
+    )
+  }, [errorMessage])
+
 
 
   return (

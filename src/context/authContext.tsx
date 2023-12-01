@@ -36,12 +36,13 @@ export const AuthProvider = ({ children }: any) => {
             const { token, usuario: user } = resp.data
             dispatch({ type: 'signUp', payload: { user, token } })
             console.log(resp.data)
-        } catch (error) {
+        } catch (error:any) {
             console.log(error.response.data);
+            dispatch({ type: 'addError', payload: error.response.data.msg ?? 'Credenciales invalidas' })
         }
     }
     const signUp = () => { }
-    const removeError = () => { }
+    const removeError = () => dispatch({ type: 'removeError' })
     const logOut = () => { }
 
 
