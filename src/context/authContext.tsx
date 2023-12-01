@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useEffect, useReducer } from 'react'
 import { LoginData, LoginResponse, Usuario } from '../interfaces/appInterfaces'
 import { AuthState, authReducer } from './authReducer';
 import cafeApi from '../api/cafeApi';
-import { AxiosError } from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type AuthContextProps = {
     errorMessage: string,
@@ -29,14 +29,28 @@ export const AuthContext = createContext({} as AuthContextProps)
 export const AuthProvider = ({ children }: any) => {
     const [authState, dispatch] = useReducer(authReducer, authInitialState)
 
+
+    useEffect(() => {
+        checkToken()
+    }, [])
+
+
+    const checkToken = async () => {
+        const token = await AsyncStorage.getItem('token')
+        if (token) return dispatch({ type: 'authFailed' })
+    }
+
+
+
     const signIn = async (data: LoginData) => {
         const { correo, password } = data
         try {
             const resp = await cafeApi.post<LoginResponse>('/auth/login', { correo, password });
             const { token, usuario: user } = resp.data
             dispatch({ type: 'signUp', payload: { user, token } })
+            await AsyncStorage.setItem('token', token)
             console.log(resp.data)
-        } catch (error:any) {
+        } catch (error: any) {
             console.log(error.response.data);
             dispatch({ type: 'addError', payload: error.response.data.msg ?? 'Credenciales invalidas' })
         }
