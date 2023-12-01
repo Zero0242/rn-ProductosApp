@@ -3,6 +3,7 @@ import React, { createContext, useReducer } from 'react'
 import { LoginData, LoginResponse, Usuario } from '../interfaces/appInterfaces'
 import { AuthState, authReducer } from './authReducer';
 import cafeApi from '../api/cafeApi';
+import { AxiosError } from 'axios';
 
 type AuthContextProps = {
     errorMessage: string,
@@ -31,12 +32,12 @@ export const AuthProvider = ({ children }: any) => {
     const signIn = async (data: LoginData) => {
         const { correo, password } = data
         try {
-            const resp = await cafeApi.post<LoginResponse>('/usuarios', { correo, password });
+            const resp = await cafeApi.post<LoginResponse>('/auth/login', { correo, password });
             const { token, usuario: user } = resp.data
             dispatch({ type: 'signUp', payload: { user, token } })
             console.log(resp.data)
         } catch (error) {
-            console.log({ error });
+            console.log(error.response.data);
         }
     }
     const signUp = () => { }
