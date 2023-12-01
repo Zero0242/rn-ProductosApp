@@ -1,18 +1,21 @@
 import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Background, WhiteLogo } from '../components'
 import { loginStyles } from '../theme/loginTheme'
 import { useForm } from '../hooks/useForm'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { AuthContext } from '../context/authContext'
+import { LoginData } from '../interfaces/appInterfaces'
 
 // PAra acceder a props del navigation
 interface Props extends NativeStackScreenProps<any, any> { }
 
 export const LoginScreen = ({ navigation }: Props) => {
   const { email, password, onChange, form } = useForm({ email: '', password: '' })
+  const { signIn } = useContext(AuthContext)
 
   const onLogin = () => {
-    console.log({ ...form });
+    signIn({ correo: email, password })
     Keyboard.dismiss()
   }
 

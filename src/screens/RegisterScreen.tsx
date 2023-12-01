@@ -92,7 +92,7 @@ export const RegisterScreen = ({ navigation }: Props) => {
           onPress={navigation.goBack}
           activeOpacity={0.8}
         >
-          <Icon name='accessibility-outline' style={loginStyles.backArrow}/>
+          <Icon name='arrow-back-outline' style={loginStyles.backArrow}/>
           <Text style={loginStyles.buttonText}>Login</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
