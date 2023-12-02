@@ -37,10 +37,14 @@ export const AuthProvider = ({ children }: any) => {
 
     const checkToken = async () => {
         const token = await AsyncStorage.getItem('token')
-        if (token) return dispatch({ type: 'authFailed' })
+        console.log({token});
+        
+        if (!token) return dispatch({ type: 'authFailed' })
+        // Login si tienen el token
+        const { data } = await cafeApi.get<LoginResponse>('/auth')
+        dispatch({ type: 'signUp', payload: { user: data.usuario, token: data.token } })
+        await AsyncStorage.setItem('token', data.token)
     }
-
-
 
     const signIn = async (data: LoginData) => {
         const { correo, password } = data
@@ -49,7 +53,6 @@ export const AuthProvider = ({ children }: any) => {
             const { token, usuario: user } = resp.data
             dispatch({ type: 'signUp', payload: { user, token } })
             await AsyncStorage.setItem('token', token)
-            console.log(resp.data)
         } catch (error: any) {
             console.log(error.response.data);
             dispatch({ type: 'addError', payload: error.response.data.msg ?? 'Credenciales invalidas' })
