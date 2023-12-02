@@ -3,6 +3,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Navigator } from './src/router/Navigator'
 import { AuthProvider } from './src/context/authContext'
+import { ProductsProvider } from './src/context/productsContext'
 
 const App = () => {
   return (
@@ -14,14 +15,14 @@ const App = () => {
   )
 }
 
-const AppState = ({ children }:any) => {
+const AppState = ({ children }: any) => {
   return (
     <AuthProvider>
-      {children}
+      <ProductsProvider>
+        {children}
+      </ProductsProvider>
     </AuthProvider>
   )
 }
 
 export default App
-
-const styles = StyleSheet.create({})
