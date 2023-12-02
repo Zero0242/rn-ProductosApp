@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { createContext, useEffect, useReducer } from 'react'
-import { LoginData, LoginResponse, Usuario } from '../interfaces/appInterfaces'
+import { LoginData, LoginResponse, RegisterData, Usuario } from '../interfaces/appInterfaces'
 import { AuthState, authReducer } from './authReducer';
 import cafeApi from '../api/cafeApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,7 +10,7 @@ type AuthContextProps = {
     token: string | null,
     usuario: Usuario | null;
     status: 'checking' | 'logged-in' | 'signed-out';
-    signUp: () => void,
+    signUp: (val: RegisterData) => void,
     signIn: (val: LoginData) => void,
     removeError: () => void,
     logOut: () => void,
@@ -37,8 +37,6 @@ export const AuthProvider = ({ children }: any) => {
 
     const checkToken = async () => {
         const token = await AsyncStorage.getItem('token')
-        console.log({ token });
-
         if (!token) return dispatch({ type: 'authFailed' })
         // Login si tienen el token
         const { data } = await cafeApi.get<LoginResponse>('/auth')
@@ -47,9 +45,8 @@ export const AuthProvider = ({ children }: any) => {
     }
 
     const signIn = async (data: LoginData) => {
-        const { correo, password } = data
         try {
-            const resp = await cafeApi.post<LoginResponse>('/auth/login', { correo, password });
+            const resp = await cafeApi.post<LoginResponse>('/auth/login', data);
             const { token, usuario: user } = resp.data
             dispatch({ type: 'signUp', payload: { user, token } })
             await AsyncStorage.setItem('token', token)
@@ -57,8 +54,20 @@ export const AuthProvider = ({ children }: any) => {
             dispatch({ type: 'addError', payload: error.response.data.msg ?? 'Credenciales invalidas' })
         }
     }
-    const signUp = () => { }
+    const signUp = async (data: RegisterData) => {
+        try {
+            const resp = await cafeApi.post<LoginResponse>('/usuarios', data);
+            const { token, usuario: user } = resp.data
+            dispatch({ type: 'signUp', payload: { user, token } })
+            await AsyncStorage.setItem('token', token)
+        } catch (error: any) {
+            console.error(error.response.data);
+            dispatch({ type: 'addError', payload: error.response.data.msg ?? 'Información Incorrecta' })
+        }
+    }
+
     const removeError = () => dispatch({ type: 'removeError' })
+
     const logOut = async () => {
         await AsyncStorage.removeItem('token')
         dispatch({ type: 'logout' })

@@ -11,7 +11,7 @@ import { LoginData } from '../interfaces/appInterfaces'
 interface Props extends NativeStackScreenProps<any, any> { }
 
 export const LoginScreen = ({ navigation }: Props) => {
-  const { email, password, onChange, form } = useForm({ email: '', password: '' })
+  const { email, password, onChange } = useForm({ email: '', password: '' })
   const { signIn, errorMessage, removeError } = useContext(AuthContext)
 
   const onLogin = () => {
@@ -25,8 +25,6 @@ export const LoginScreen = ({ navigation }: Props) => {
       [{ text: 'ok', onPress: removeError }]
     )
   }, [errorMessage])
-
-
 
   return (
     <>

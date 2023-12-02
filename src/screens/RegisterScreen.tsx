@@ -1,18 +1,20 @@
 import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { loginStyles } from '../theme/loginTheme'
 import { WhiteLogo } from '../components'
 import { useForm } from '../hooks/useForm'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AuthContext } from '../context/authContext'
 
 
 interface Props extends NativeStackScreenProps<any, any> { }
 export const RegisterScreen = ({ navigation }: Props) => {
-  const { email, password, onChange, form } = useForm({ email: '', password: '', name: '' })
+  const { email, password, onChange, name } = useForm({ email: '', password: '', name: '' })
+  const { signUp } = useContext(AuthContext)
 
   const onRegister = () => {
-    console.log({ ...form });
+    signUp({ correo: email, password, nombre: name });
     Keyboard.dismiss()
   }
 
@@ -39,7 +41,7 @@ export const RegisterScreen = ({ navigation }: Props) => {
             autoCapitalize='words'
             autoCorrect={false}
             onChangeText={(value) => onChange(value, 'name')}
-            value={email}
+            value={name}
             onSubmitEditing={onRegister}
           />
           <Text style={loginStyles.label}>Email</Text>
@@ -88,11 +90,11 @@ export const RegisterScreen = ({ navigation }: Props) => {
           {/* Crear Nueva Cuenta */}
         </View>
         <TouchableOpacity
-          style={{ ...loginStyles.button, ...loginStyles.buttonReturn}}
+          style={{ ...loginStyles.button, ...loginStyles.buttonReturn }}
           onPress={navigation.goBack}
           activeOpacity={0.8}
         >
-          <Icon name='arrow-back-outline' style={loginStyles.backArrow}/>
+          <Icon name='arrow-back-outline' style={loginStyles.backArrow} />
           <Text style={loginStyles.buttonText}>Login</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
