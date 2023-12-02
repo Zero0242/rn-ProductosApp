@@ -37,8 +37,8 @@ export const AuthProvider = ({ children }: any) => {
 
     const checkToken = async () => {
         const token = await AsyncStorage.getItem('token')
-        console.log({token});
-        
+        console.log({ token });
+
         if (!token) return dispatch({ type: 'authFailed' })
         // Login si tienen el token
         const { data } = await cafeApi.get<LoginResponse>('/auth')
@@ -54,13 +54,15 @@ export const AuthProvider = ({ children }: any) => {
             dispatch({ type: 'signUp', payload: { user, token } })
             await AsyncStorage.setItem('token', token)
         } catch (error: any) {
-            console.log(error.response.data);
             dispatch({ type: 'addError', payload: error.response.data.msg ?? 'Credenciales invalidas' })
         }
     }
     const signUp = () => { }
     const removeError = () => dispatch({ type: 'removeError' })
-    const logOut = () => { }
+    const logOut = async () => {
+        await AsyncStorage.removeItem('token')
+        dispatch({ type: 'logout' })
+    }
 
 
 
