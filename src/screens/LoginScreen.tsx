@@ -5,7 +5,6 @@ import { loginStyles } from '../theme/loginTheme'
 import { useForm } from '../hooks/useForm'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { AuthContext } from '../context/authContext'
-import { LoginData } from '../interfaces/appInterfaces'
 
 // PAra acceder a props del navigation
 interface Props extends NativeStackScreenProps<any, any> { }

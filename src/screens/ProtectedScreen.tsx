@@ -1,8 +1,11 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 import { AuthContext } from '../context/authContext'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
-export const ProtectedScreen = () => {
+
+interface Props extends NativeStackScreenProps<any, any> { }
+export const ProtectedScreen = (props: Props) => {
   const { logOut, usuario, token } = useContext(AuthContext)
   return (
     <View style={styles.container}>
