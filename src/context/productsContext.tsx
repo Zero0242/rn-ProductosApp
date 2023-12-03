@@ -26,10 +26,15 @@ export const ProductsProvider = ({ children }: any) => {
         const { data } = await cafeApi.get<ProductsResponse>('/productos?limite=50');
         setProducts([...products, ...data.productos])
     }
+    
     const addProducts = async (categoryID: string, productName: string) => { }
     const updateProducts = (categoryID: string, productName: string, productID: string) => { }
     const deleteProduct = async (id: string) => { }
-    const loadProductById = async (id: string) => products[0]
+
+    const loadProductById = async (id: string) => {
+        const { data } = await cafeApi.get<Producto>(`/productos/${id}`);
+        return data;
+    }
     const uploadImage = async (data: any, id: string) => { }
 
     return (

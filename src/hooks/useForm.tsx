@@ -6,6 +6,9 @@ export const useForm = <T extends Object>(initState: T) => {
     function onChange<K extends Object>(value: K, key: keyof T) {
         setstate({ ...state, [key]: value })
     }
+    function setFormValue(form: T) {
+        setstate(form)
+    }
 
-    return { ...state, form: state, onChange }
+    return { ...state, form: state, onChange, setFormValue }
 }

@@ -1,20 +1,41 @@
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { ProductsStackParams } from '../router/ProductsNavigator'
 import { CustomButton } from '../components';
 import { Picker } from '@react-native-picker/picker';
 import { useCategories } from '../hooks/useCategories';
+import { useForm } from '../hooks/useForm';
+import { ProductsContext } from '../context/productsContext';
 
 interface Props extends NativeStackScreenProps<ProductsStackParams, 'ProductScreen'> { }
 export const ProductScreen = ({ route, navigation }: Props) => {
-  const { id, name } = route.params;
-  const [selectedCategory, setselectedCategory] = useState('js')
+  const { id = '', name = '' } = route.params;
+  const [selectedCategory, setselectedCategory] = useState('')
+  const { loadProductById } = useContext(ProductsContext)
   const { categories } = useCategories()
+
+  const { nombre, form, onChange, setFormValue } = useForm({ _id: id, categoriaID: '', nombre: name, imagen: '' })
 
   useEffect(() => {
     name && navigation.setOptions({ title: name })
   }, [])
+
+  useEffect(() => {
+    loadProduct()
+  }, [])
+
+  const loadProduct = async () => {
+    if (id) {
+      const producto = await loadProductById(id)
+      setFormValue({
+        _id: id,
+        categoriaID: producto.categoria._id,
+        imagen: producto.img ?? '',
+        nombre
+      })
+    }
+  }
 
 
   return (
@@ -23,16 +44,20 @@ export const ProductScreen = ({ route, navigation }: Props) => {
         <Text style={styles.label}>Nombre: {name}</Text>
         <Text>ID: {id}</Text>
         <TextInput
+          value={nombre}
           placeholder='Producto'
+          onChangeText={(value) => onChange(value, 'nombre')}
           style={styles.textInput}
         />
         {/* Date Picker */}
         <Text>Seleccione la categoria:{selectedCategory}</Text>
         <Picker
           selectedValue={selectedCategory}
-          onValueChange={
-            (itemValue, itemIndex) => setselectedCategory(itemValue)
-          }
+          onValueChange={(itemValue, itemIndex) => {
+            const category = categories[itemIndex]
+            onChange(itemValue, 'categoriaID')
+            setselectedCategory(category.nombre)
+          }}
         >
           {categories.map(
             (category) => <Picker.Item key={category._id} label={category.nombre} value={category._id} />
@@ -55,6 +80,7 @@ export const ProductScreen = ({ route, navigation }: Props) => {
             iconName='images-outline'
           />
         </View>
+        <Text>{JSON.stringify(form, null, 5)}</Text>
       </ScrollView>
     </View>
   )
