@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react'
 
@@ -6,11 +6,16 @@ interface Props {
     title: string
     iconName?: string
     onPress?: () => void
+    style?: StyleProp<ViewStyle>
 }
-export const CustomButton = ({ onPress, title, iconName = 'help-circle-outline' }: Props) => {
+export const CustomButton = ({ onPress, title, style, iconName = 'help-circle-outline' }: Props) => {
     return (
-        <TouchableOpacity style={styles.customButton} activeOpacity={0.8}>
-            <Icon name={iconName} color={'white'} size={18} onPress={onPress} />
+        <TouchableOpacity
+            style={{ ...styles.customButton, ...style as any }}
+            onPress={onPress}
+            activeOpacity={0.8}
+        >
+            <Icon name={iconName} color={'white'} size={18} />
             <Text style={styles.buttonLabel}>{title}</Text>
         </TouchableOpacity>
     )

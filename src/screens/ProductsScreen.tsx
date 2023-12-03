@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
 import { ProductsContext } from '../context/productsContext'
 import { Producto } from '../interfaces/productInterface'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -10,6 +10,13 @@ import Icon from 'react-native-vector-icons/Ionicons'
 interface Props extends NativeStackScreenProps<ProductsStackParams, 'ProductsScreen'> { }
 export const ProductsScreen = ({ navigation }: Props) => {
   const { products, loadProducts } = useContext(ProductsContext)
+  const [loading, setloading] = useState(false)
+
+  const reloadProducts = async () => {
+    setloading(true)
+    await loadProducts()
+    setloading(false)
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -32,6 +39,12 @@ export const ProductsScreen = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
       <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={reloadProducts}
+          />
+        }
         data={products}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => renderItem(item)}

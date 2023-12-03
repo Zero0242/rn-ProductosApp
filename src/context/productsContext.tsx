@@ -4,7 +4,7 @@ import cafeApi from '../api/cafeApi';
 
 type ProductsContextProps = {
     products: Producto[],
-    loadProducts: () => void,
+    loadProducts: () => Promise<void>,
     addProducts: (categoryID: string, productName: string) => Promise<Producto>,
     updateProducts: (categoryID: string, productName: string, productID: string) => void,
     deleteProduct: (id: string) => Promise<void>,
@@ -24,7 +24,8 @@ export const ProductsProvider = ({ children }: any) => {
 
     const loadProducts = async () => {
         const { data } = await cafeApi.get<ProductsResponse>('/productos?limite=50');
-        setProducts([...products, ...data.productos])
+        //setProducts([...products, ...data.productos])
+        setProducts(data.productos)
     }
 
     const addProducts = async (categoryID: string, productName: string) => {
@@ -42,7 +43,14 @@ export const ProductsProvider = ({ children }: any) => {
         ))
     }
 
-    const deleteProduct = async (id: string) => { }
+    const deleteProduct = async (id: string) => {
+        try {
+            const resp = await cafeApi.delete(`/productos/${id}`)
+            setProducts(products.filter((producto) => producto._id !== id))
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const loadProductById = async (id: string) => {
         const { data } = await cafeApi.get<Producto>(`/productos/${id}`);

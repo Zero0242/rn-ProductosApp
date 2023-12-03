@@ -11,7 +11,7 @@ import { ProductsContext } from '../context/productsContext';
 interface Props extends NativeStackScreenProps<ProductsStackParams, 'ProductScreen'> { }
 export const ProductScreen = ({ route, navigation }: Props) => {
   const { id = '', name = '' } = route.params;
-  const { loadProductById, addProducts, updateProducts } = useContext(ProductsContext)
+  const { loadProductById, deleteProduct, addProducts, updateProducts } = useContext(ProductsContext)
   const { categories } = useCategories()
 
   const { _id, categoriaID, nombre, imagen, onChange, setFormValue } = useForm({ _id: id, categoriaID: '', nombre: name, imagen: '' })
@@ -24,16 +24,21 @@ export const ProductScreen = ({ route, navigation }: Props) => {
     loadProduct()
   }, [])
 
+  const removeElement = async () => {
+    await deleteProduct(_id)
+    navigation.goBack()
+  }
+
   const loadProduct = async () => {
-    if (_id) {
-      const producto = await loadProductById(_id)
-      setFormValue({
-        categoriaID: producto.categoria._id,
-        imagen: producto.img ?? '',
-        _id,
-        nombre
-      })
-    }
+    if (!_id) return;
+    const producto = await loadProductById(_id)
+    setFormValue({
+      categoriaID: producto.categoria._id,
+      imagen: producto.img ?? '',
+      _id,
+      nombre
+    })
+
   }
 
   const saveOrUpdate = async () => {
@@ -77,16 +82,24 @@ export const ProductScreen = ({ route, navigation }: Props) => {
         />
         {
           _id.length > 0 && (
-            <View style={styles.optionRow}>
+            <>
+              <View style={styles.optionRow}>
+                <CustomButton
+                  title='Camara'
+                  iconName='camera-outline'
+                />
+                <CustomButton
+                  title='Galeria'
+                  iconName='images-outline'
+                />
+              </View>
               <CustomButton
-                title='Camara'
-                iconName='camera-outline'
-              />
-              <CustomButton
-                title='Galeria'
-                iconName='images-outline'
-              />
-            </View>
+                title='Eliminar'
+                iconName='trash-outline'
+                onPress={removeElement}
+                style={{ backgroundColor: 'red', width: '30%', alignSelf: 'center', marginTop: 20 }} />
+            </>
+
           )
         }
         {
