@@ -9,3 +9,7 @@ $ @react-native-async-storage/async-storage
 ```bash
 $ yarn add @react-native-picker/picker
 ```
+3. React Image Picker
+```bash
+$ yarn add react-native-image-picker
+```

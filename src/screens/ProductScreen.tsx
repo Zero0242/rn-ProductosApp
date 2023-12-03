@@ -7,13 +7,14 @@ import { Picker } from '@react-native-picker/picker';
 import { useCategories } from '../hooks/useCategories';
 import { useForm } from '../hooks/useForm';
 import { ProductsContext } from '../context/productsContext';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 interface Props extends NativeStackScreenProps<ProductsStackParams, 'ProductScreen'> { }
 export const ProductScreen = ({ route, navigation }: Props) => {
   const { id = '', name = '' } = route.params;
   const { loadProductById, deleteProduct, addProducts, updateProducts } = useContext(ProductsContext)
+  const [tempUri, setTempUri] = useState<string>()
   const { categories } = useCategories()
-
   const { _id, categoriaID, nombre, imagen, onChange, setFormValue } = useForm({ _id: id, categoriaID: '', nombre: name, imagen: '' })
 
   useEffect(() => {
@@ -83,14 +84,36 @@ export const ProductScreen = ({ route, navigation }: Props) => {
         {
           _id.length > 0 && (
             <>
+              <Text>{tempUri}</Text>
               <View style={styles.optionRow}>
                 <CustomButton
                   title='Camara'
                   iconName='camera-outline'
+                  onPress={() => {
+                    launchCamera({ mediaType: 'photo', maxWidth: 900, quality: 0.5 },
+                      (resp) => {
+                        if (resp.didCancel) return;
+                        const [firstImage] = resp.assets || []
+                        if (!firstImage.uri) return;
+                        setTempUri(firstImage.uri)
+                      }
+                    )
+                  }}
                 />
                 <CustomButton
                   title='Galeria'
                   iconName='images-outline'
+                  onPress={async () => {
+                    const response = await launchImageLibrary({ mediaType: 'photo', maxWidth: 900, quality: 0.5 })
+                    const { assets } = response
+                    if (!assets || !assets[0].uri) return;
+
+                    console.log(...assets);
+                    onChange(assets[0].uri, 'imagen')
+
+
+
+                  }}
                 />
               </View>
               <CustomButton
