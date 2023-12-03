@@ -31,7 +31,6 @@ export const ProductsScreen = ({ navigation }: Props) => {
   /* Añadir Pull to Refresh */
   return (
     <View style={styles.container}>
-      <Text>ProductsScreen</Text>
       <FlatList
         data={products}
         keyExtractor={(item) => item._id}
@@ -62,5 +61,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderBottomColor: 'rgba(0,0,0,0.1)'
   },
-  productLabel: {}
+  productLabel: {
+    fontSize: 24,
+    fontWeight: 'bold'
+  }
 })

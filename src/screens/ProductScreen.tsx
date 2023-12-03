@@ -1,4 +1,4 @@
-import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { ProductsStackParams } from '../router/ProductsNavigator'
@@ -11,11 +11,10 @@ import { ProductsContext } from '../context/productsContext';
 interface Props extends NativeStackScreenProps<ProductsStackParams, 'ProductScreen'> { }
 export const ProductScreen = ({ route, navigation }: Props) => {
   const { id = '', name = '' } = route.params;
-  const [selectedCategory, setselectedCategory] = useState('')
   const { loadProductById } = useContext(ProductsContext)
   const { categories } = useCategories()
 
-  const { nombre, form, onChange, setFormValue } = useForm({ _id: id, categoriaID: '', nombre: name, imagen: '' })
+  const { categoriaID, nombre, imagen, onChange, setFormValue } = useForm({ _id: id, categoriaID: '', nombre: name, imagen: '' })
 
   useEffect(() => {
     name && navigation.setOptions({ title: name })
@@ -49,14 +48,11 @@ export const ProductScreen = ({ route, navigation }: Props) => {
           onChangeText={(value) => onChange(value, 'nombre')}
           style={styles.textInput}
         />
-        {/* Date Picker */}
-        <Text>Seleccione la categoria:{selectedCategory}</Text>
+        <Text>Seleccione la categoria:</Text>
         <Picker
-          selectedValue={selectedCategory}
-          onValueChange={(itemValue, itemIndex) => {
-            const category = categories[itemIndex]
+          selectedValue={categoriaID}
+          onValueChange={(itemValue) => {
             onChange(itemValue, 'categoriaID')
-            setselectedCategory(category.nombre)
           }}
         >
           {categories.map(
@@ -80,7 +76,16 @@ export const ProductScreen = ({ route, navigation }: Props) => {
             iconName='images-outline'
           />
         </View>
-        <Text>{JSON.stringify(form, null, 5)}</Text>
+        {
+          imagen.length !== 0 && (<Image source={{ uri: imagen }}
+            style={{
+              width: '100%',
+              height: 300,
+              marginTop: 20,
+            }}
+          />
+          )
+        }
       </ScrollView>
     </View>
   )
