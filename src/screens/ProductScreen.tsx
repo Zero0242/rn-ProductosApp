@@ -14,7 +14,7 @@ export const ProductScreen = ({ route, navigation }: Props) => {
   const { loadProductById, addProducts, updateProducts } = useContext(ProductsContext)
   const { categories } = useCategories()
 
-  const { categoriaID, nombre, imagen, onChange, setFormValue } = useForm({ _id: id, categoriaID: '', nombre: name, imagen: '' })
+  const { _id, categoriaID, nombre, imagen, onChange, setFormValue } = useForm({ _id: id, categoriaID: '', nombre: name, imagen: '' })
 
   useEffect(() => {
     navigation.setOptions({ title: (nombre) ? nombre : 'Sin nombre de Producto' })
@@ -25,24 +25,24 @@ export const ProductScreen = ({ route, navigation }: Props) => {
   }, [])
 
   const loadProduct = async () => {
-    if (id) {
-      const producto = await loadProductById(id)
+    if (_id) {
+      const producto = await loadProductById(_id)
       setFormValue({
-        _id: id,
         categoriaID: producto.categoria._id,
         imagen: producto.img ?? '',
+        _id,
         nombre
       })
     }
   }
 
-  const saveOrUpdate = () => {
-    if (id.length > 0) {
-      updateProducts(categoriaID, nombre, id)
-      console.log('actualizar');
+  const saveOrUpdate = async () => {
+    if (_id.length > 0) {
+      updateProducts(categoriaID, nombre, _id)
     } else {
-      addProducts(categoriaID, nombre)
-      console.log('guardar');
+      const tempID = categoriaID || categories[0]._id
+      const newProduct = await addProducts(tempID, nombre)
+      onChange(newProduct._id, '_id')
     }
   }
 
@@ -51,7 +51,7 @@ export const ProductScreen = ({ route, navigation }: Props) => {
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.label}>Nombre: {name}</Text>
-        <Text>ID: {id}</Text>
+        <Text>ID: {_id}</Text>
         <TextInput
           value={nombre}
           placeholder='Producto'
@@ -76,7 +76,7 @@ export const ProductScreen = ({ route, navigation }: Props) => {
           color='#5856d6'
         />
         {
-          id.length > 0 && (
+          _id.length > 0 && (
             <View style={styles.optionRow}>
               <CustomButton
                 title='Camara'

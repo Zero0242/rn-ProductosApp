@@ -5,7 +5,7 @@ import cafeApi from '../api/cafeApi';
 type ProductsContextProps = {
     products: Producto[],
     loadProducts: () => void,
-    addProducts: (categoryID: string, productName: string) => Promise<void>,
+    addProducts: (categoryID: string, productName: string) => Promise<Producto>,
     updateProducts: (categoryID: string, productName: string, productID: string) => void,
     deleteProduct: (id: string) => Promise<void>,
     loadProductById: (id: string) => Promise<Producto>,
@@ -30,6 +30,7 @@ export const ProductsProvider = ({ children }: any) => {
     const addProducts = async (categoryID: string, productName: string) => {
         const resp = await cafeApi.post<Producto>('/productos', { nombre: productName, categoria: categoryID })
         setProducts([...products, resp.data])
+        return resp.data
     }
 
     const updateProducts = async (categoryID: string, productName: string, productID: string) => {
@@ -39,7 +40,6 @@ export const ProductsProvider = ({ children }: any) => {
             return producto;
         }
         ))
-
     }
 
     const deleteProduct = async (id: string) => { }
