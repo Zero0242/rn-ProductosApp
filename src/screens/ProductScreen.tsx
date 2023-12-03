@@ -11,14 +11,14 @@ import { ProductsContext } from '../context/productsContext';
 interface Props extends NativeStackScreenProps<ProductsStackParams, 'ProductScreen'> { }
 export const ProductScreen = ({ route, navigation }: Props) => {
   const { id = '', name = '' } = route.params;
-  const { loadProductById } = useContext(ProductsContext)
+  const { loadProductById, addProducts, updateProducts } = useContext(ProductsContext)
   const { categories } = useCategories()
 
   const { categoriaID, nombre, imagen, onChange, setFormValue } = useForm({ _id: id, categoriaID: '', nombre: name, imagen: '' })
 
   useEffect(() => {
-    name && navigation.setOptions({ title: name })
-  }, [])
+    navigation.setOptions({ title: (nombre) ? nombre : 'Sin nombre de Producto' })
+  }, [nombre])
 
   useEffect(() => {
     loadProduct()
@@ -33,6 +33,16 @@ export const ProductScreen = ({ route, navigation }: Props) => {
         imagen: producto.img ?? '',
         nombre
       })
+    }
+  }
+
+  const saveOrUpdate = () => {
+    if (id.length > 0) {
+      updateProducts(categoriaID, nombre, id)
+      console.log('actualizar');
+    } else {
+      addProducts(categoriaID, nombre)
+      console.log('guardar');
     }
   }
 
@@ -62,20 +72,23 @@ export const ProductScreen = ({ route, navigation }: Props) => {
 
         <Button
           title='Guardar'
-          onPress={() => { }}
+          onPress={saveOrUpdate}
           color='#5856d6'
         />
-
-        <View style={styles.optionRow}>
-          <CustomButton
-            title='Camara'
-            iconName='camera-outline'
-          />
-          <CustomButton
-            title='Galeria'
-            iconName='images-outline'
-          />
-        </View>
+        {
+          id.length > 0 && (
+            <View style={styles.optionRow}>
+              <CustomButton
+                title='Camara'
+                iconName='camera-outline'
+              />
+              <CustomButton
+                title='Galeria'
+                iconName='images-outline'
+              />
+            </View>
+          )
+        }
         {
           imagen.length !== 0 && (<Image source={{ uri: imagen }}
             style={{

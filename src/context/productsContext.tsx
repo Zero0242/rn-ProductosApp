@@ -26,9 +26,21 @@ export const ProductsProvider = ({ children }: any) => {
         const { data } = await cafeApi.get<ProductsResponse>('/productos?limite=50');
         setProducts([...products, ...data.productos])
     }
-    
-    const addProducts = async (categoryID: string, productName: string) => { }
-    const updateProducts = (categoryID: string, productName: string, productID: string) => { }
+
+    const addProducts = async (categoryID: string, productName: string) => {
+        console.log('Called', "CREATE");
+        console.log({ categoryID, productName });
+
+
+    }
+
+    const updateProducts = async (categoryID: string, productName: string, productID: string) => {
+        console.log('Called', 'UPDATE');
+        console.log({ categoryID, productName ,productID});
+
+
+    }
+
     const deleteProduct = async (id: string) => { }
 
     const loadProductById = async (id: string) => {
