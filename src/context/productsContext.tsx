@@ -28,16 +28,17 @@ export const ProductsProvider = ({ children }: any) => {
     }
 
     const addProducts = async (categoryID: string, productName: string) => {
-        console.log('Called', "CREATE");
-        console.log({ categoryID, productName });
-
-
+        const resp = await cafeApi.post<Producto>('/productos', { nombre: productName, categoria: categoryID })
+        setProducts([...products, resp.data])
     }
 
     const updateProducts = async (categoryID: string, productName: string, productID: string) => {
-        console.log('Called', 'UPDATE');
-        console.log({ categoryID, productName ,productID});
-
+        const resp = await cafeApi.put<Producto>(`/productos/${productID}`, { nombre: productName, categoria: categoryID })
+        setProducts(products.map((producto) => {
+            if (producto._id === productID) return resp.data;
+            return producto;
+        }
+        ))
 
     }
 
