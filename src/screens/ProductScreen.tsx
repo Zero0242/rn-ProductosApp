@@ -1,13 +1,14 @@
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { ProductsStackParams } from '../router/ProductsNavigator'
 import { CustomButton } from '../components';
-
+import { Picker } from '@react-native-picker/picker';
 
 interface Props extends NativeStackScreenProps<ProductsStackParams, 'ProductScreen'> { }
 export const ProductScreen = ({ route, navigation }: Props) => {
   const { id, name } = route.params;
+  const [selectedCategory, setselectedCategory] = useState('js')
 
   useEffect(() => {
     name && navigation.setOptions({ title: name })
@@ -24,8 +25,17 @@ export const ProductScreen = ({ route, navigation }: Props) => {
           style={styles.textInput}
         />
         {/* Date Picker */}
-        <Text>Seleccione la categoria:</Text>
-        <></>
+        <Text>Seleccione la categoria:{selectedCategory}</Text>
+        <Picker
+          selectedValue={selectedCategory}
+          onValueChange={(itemValue, itemIndex) => {
+            setselectedCategory(itemValue)
+          }}
+        >
+          <Picker.Item label='Javascript' value={'js'}/>
+          <Picker.Item label='Python' value={'py'}/>
+
+        </Picker>
 
         <Button
           title='Guardar'
@@ -41,7 +51,7 @@ export const ProductScreen = ({ route, navigation }: Props) => {
           <CustomButton
             title='Galeria'
             iconName='images-outline'
-          />          
+          />
         </View>
       </ScrollView>
     </View>
