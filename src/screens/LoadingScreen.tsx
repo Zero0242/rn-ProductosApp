@@ -1,5 +1,6 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
+import { ActivityIndicator } from 'react-native-paper'
 
 export const LoadingScreen = () => {
     return (
@@ -12,5 +13,3 @@ export const LoadingScreen = () => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({})

@@ -1,10 +1,11 @@
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect } from 'react'
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, View } from 'react-native'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { Text } from 'react-native-paper'
 import { Background, WhiteLogo } from '../components'
 import { loginStyles } from '../theme/loginTheme'
-import { useForm } from '../hooks/useForm'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { AuthContext } from '../context/authContext'
+import { useForm } from '../hooks/'
+import { AuthContext } from '../context/'
 
 // PAra acceder a props del navigation
 interface Props extends NativeStackScreenProps<any, any> { }
@@ -70,6 +71,7 @@ export const LoginScreen = ({ navigation }: Props) => {
             onSubmitEditing={onLogin}
           />
           {/* Boton Login */}
+
           <View style={loginStyles.buttonContainer}>
             <TouchableOpacity
               activeOpacity={0.8}

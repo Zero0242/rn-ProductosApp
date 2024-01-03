@@ -1,13 +1,12 @@
+import React, { useContext, useEffect } from 'react'
 import { Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { ProductsStackParams } from '../router/ProductsNavigator'
-import { CustomButton } from '../components';
-import { Picker } from '@react-native-picker/picker';
-import { useCategories } from '../hooks/useCategories';
-import { useForm } from '../hooks/useForm';
-import { ProductsContext } from '../context/productsContext';
 import { Asset, CameraOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { Picker } from '@react-native-picker/picker';
+import { ProductsStackParams } from '../router'
+import { CustomButton } from '../components';
+import { useCategories,useForm } from '../hooks/';
+import { ProductsContext } from '../context/';
 
 interface Props extends NativeStackScreenProps<ProductsStackParams, 'ProductScreen'> { }
 export const ProductScreen = ({ route, navigation }: Props) => {

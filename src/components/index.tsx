@@ -1,3 +1,3 @@
-export { CustomButton } from "./CustomButton";
-export { WhiteLogo } from "./WhiteLogo";
-export { Background } from "./Background";
+export * from "./CustomButton";
+export * from "./WhiteLogo";
+export * from "./Background";

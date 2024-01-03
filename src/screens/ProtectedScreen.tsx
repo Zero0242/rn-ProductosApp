@@ -1,7 +1,7 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
-import { AuthContext } from '../context/authContext'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { AuthContext } from '../context'
 
 
 interface Props extends NativeStackScreenProps<any, any> { }

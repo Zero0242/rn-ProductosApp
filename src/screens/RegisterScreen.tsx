@@ -1,11 +1,11 @@
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useContext } from 'react'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { loginStyles } from '../theme/loginTheme'
 import { WhiteLogo } from '../components'
-import { useForm } from '../hooks/useForm'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { AuthContext } from '../context/authContext'
+import { useForm } from '../hooks/'
+import { AuthContext } from '../context/'
 
 
 interface Props extends NativeStackScreenProps<any, any> { }

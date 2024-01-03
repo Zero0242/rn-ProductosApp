@@ -1,10 +1,10 @@
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
-import { ProductsContext } from '../context/productsContext'
-import { Producto } from '../interfaces/productInterface'
+import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { ProductsStackParams } from '../router/ProductsNavigator'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { ProductsStackParams } from '../router/'
+import { ProductsContext } from '../context/'
+import { Producto } from '../interfaces/'
 
 
 interface Props extends NativeStackScreenProps<ProductsStackParams, 'ProductsScreen'> { }
