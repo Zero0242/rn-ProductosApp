@@ -173,7 +173,6 @@ export function RoundedButton() {
 }
 ```
 
-
 # Typescript: Import Alias
 
 Para configurar importaciones de typescript en react native, seguir la [referencia](https://reactnative.dev/docs/typescript#using-custom-path-aliases-with-typescript) y la [guia](https://www.youtube.com/watch?v=7H6ZuKpzT3k)
@@ -198,3 +197,12 @@ $ yarn add --dev babel-plugin-module-resolver
 ```
 
 3. Configurar el archivo `babel.config.js`
+
+# UI Kitten
+
+Para usar la libreria de componentes de [ui-kitten](https://akveo.github.io/react-native-ui-kitten/docs/guides/getting-started#manual-installation)
+
+```bash
+# Paquetes necesarios
+$ yarn add @ui-kitten/components @eva-design/eva react-native-svg
+```
