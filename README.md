@@ -172,3 +172,29 @@ export function RoundedButton() {
     )
 }
 ```
+
+
+# Typescript: Import Alias
+
+Para configurar importaciones de typescript en react native, seguir la [referencia](https://reactnative.dev/docs/typescript#using-custom-path-aliases-with-typescript) y la [guia](https://www.youtube.com/watch?v=7H6ZuKpzT3k)
+
+> Permite la sintaxis `@folder` para realizar importaciones
+
+```ts
+// Importacion normal
+import {Button} from '../../componentes/Button';
+
+// Importacion con alias
+import {Button} from '@componentes/Button';
+```
+
+1. Configurar los alias en el archivo `tsconfig.json`
+
+2. Instalar dependencia de babel, para trabajar con los alias
+
+```bash
+# Resuelve las importaciones
+$ yarn add --dev babel-plugin-module-resolver
+```
+
+3. Configurar el archivo `babel.config.js`
