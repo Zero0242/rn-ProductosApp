@@ -1,10 +1,13 @@
+import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
-import { ReactNativeScreen } from './presentation/templates/ReactNativeScreen'
+import { StackRouter } from './presentation/router'
 
 export const ProductsApp = () => {
   return (
     <>
-      <ReactNativeScreen />
+      <NavigationContainer>
+        <StackRouter />
+      </NavigationContainer>
     </>
   )
 }
