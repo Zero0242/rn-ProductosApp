@@ -95,7 +95,7 @@ function App(){
 }
 ```
 
-## Stack Navigator
+# Stack Navigator
 
 Seguir la [documentación](https://reactnavigation.org/docs/hello-react-navigation) para las instrucciones actualizadas, requiere el paso anterior para que funcione.
 
@@ -106,10 +106,11 @@ Seguir la [documentación](https://reactnavigation.org/docs/hello-react-navigati
 $ yarn add @react-navigation/native-stack
 ```
 
-- Configuracion del Navigator
-  - el **type** es usado para definir que valores va a pedir una pantalla y sus "nombres"
-  - `createNativeStackNavigator` nos genera el navegador, se le pone el **type** para recibir ayuda
-  - `StackRouter`: el elemento JSX que va a ir dentro del `<NavigationContainer/>`
+## Configuracion del Navigator
+
+- el **type** es usado para definir que valores va a pedir una pantalla y sus "nombres"
+- `createNativeStackNavigator` nos genera el navegador, se le pone el **type** para recibir ayuda
+- `StackRouter`: el elemento JSX que va a ir dentro del `<NavigationContainer/>`
 
 ```jsx
 // Type => Nombra las pantallas de la app y los parametros que van a usar
@@ -132,7 +133,9 @@ export function StackRouter() {
 }
 ```
 
-### Navigation Props
+## Navigation Props
+
+### Pantalla
 
 Las **pantallas** tiene acceso a los props de navegacion `navigation` y `route`, por eso usamos el **type** seguido del nombre de la pantalla
 
@@ -150,6 +153,8 @@ export function HomeScreen({navigation, route}: Props) {
   );
 }
 ```
+
+### Componente
 
 A nivel de los **hooks** podemos hacer uso del **type** para obtener tipado en los datos del hook, esto es usado principalmente en **componentes** que existen dentro de la pantalla.
 
