@@ -205,4 +205,6 @@ Para usar la libreria de componentes de [ui-kitten](https://akveo.github.io/reac
 ```bash
 # Paquetes necesarios
 $ yarn add @ui-kitten/components @eva-design/eva react-native-svg
+# Eva Icons
+$ yarn add @ui-kitten/eva-icons react-native-svg
 ```
