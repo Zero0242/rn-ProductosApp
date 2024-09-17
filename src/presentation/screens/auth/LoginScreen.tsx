@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import React, { useState } from 'react'
 import { Alert, ScrollView, useWindowDimensions } from 'react-native'
+import { z } from 'zod'
 import { AppIcon } from '../../components/ui'
 import { useForm } from '../../hooks'
 import { RootStackParams } from '../../router'
@@ -9,9 +10,14 @@ import { useAuthStore } from '../../store'
 
 interface Props extends NativeStackScreenProps<RootStackParams, 'LoginScreen'> { }
 
+const validateSchema = z.object({
+    email: z.string().email('No es un email valido'),
+    password: z.string().min(1, 'No debe quedar vacía la contraseña'),
+})
+
 export function LoginScreen({ navigation, route }: Props) {
     const login = useAuthStore(state => state.login)
-    const { email, password, updateForm } = useForm({
+    const { email, password, updateForm, formState } = useForm({
         email: '', password: ''
     })
     const [isPosting, setIsPosting] = useState(false)
@@ -19,7 +25,11 @@ export function LoginScreen({ navigation, route }: Props) {
     const { height } = useWindowDimensions()
 
     const onLogin = async () => {
-        console.log({ email, password });
+        const { success, error } = validateSchema.safeParse(formState)
+        if (!success) {
+            const errors: string[] = error?.errors.map(e => e.message) ?? []
+            return Alert.alert('Error', errors.join('\n'))
+        }
 
         setIsPosting(true)
         const isOK = await login(email, password)

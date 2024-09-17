@@ -2,12 +2,19 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import React, { useState } from 'react'
 import { Alert, ScrollView, useWindowDimensions } from 'react-native'
+import { z } from 'zod'
 import { AppIcon } from '../../components/ui'
 import { useForm } from '../../hooks'
 import { RootStackParams } from '../../router'
 import { useAuthStore } from '../../store'
 
 interface Props extends NativeStackScreenProps<RootStackParams, 'RegisterScreen'> { }
+
+const validateSchema = z.object({
+    fullName: z.string().min(5, 'Nombre necesario requiere 5 letras'),
+    email: z.string().email('No es un email valido'),
+    password: z.string().min(4, 'Password requiere minimo 4 letras'),
+})
 
 export function RegisterScreen({ navigation, route }: Props) {
     const { height } = useWindowDimensions()
@@ -17,7 +24,14 @@ export function RegisterScreen({ navigation, route }: Props) {
         email: '', password: '', fullName: ''
     })
 
+
     const onRegister = async () => {
+        const { success, error } = validateSchema.safeParse(formState)
+        if (!success) {
+            const errors: string[] = error?.errors.map(e => e.message) ?? []
+            return Alert.alert('Error', errors.join('\n'))
+        }
+
         setIsLoading(true)
         const isOK = await register(formState)
         setIsLoading(false)
