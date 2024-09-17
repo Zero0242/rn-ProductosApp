@@ -29,7 +29,7 @@ export function LoginScreen() {
                 <Layout style={{ height: 30 }} />
                 {/* Acceso */}
                 <Button
-                    accessoryRight={<AppIcon name='arrow-forward-outline' />}
+                    accessoryRight={<AppIcon name='arrow-forward-outline' white />}
                     onPress={() => { }}
                 >
                     Ingresar
