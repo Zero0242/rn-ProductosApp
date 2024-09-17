@@ -1,5 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {create} from 'zustand';
 import * as Auth from '../../../actions/auth';
+import {AppConstants} from '../../../config/constants/app-constants';
 import {User} from '../../../domain/entities';
 
 interface AuthState {
@@ -10,7 +12,7 @@ interface AuthState {
 interface AuthActions {
   validateToken: () => Promise<void>;
   login: (email: string, password: string) => Promise<boolean>;
-  logout: () => void;
+  logout: () => Promise<void>;
   register: (options: {
     email: string;
     password: string;
@@ -47,5 +49,9 @@ export const useAuthStore = create<AuthState & AuthActions>()((set, get) => ({
     return true;
   },
 
-  logout: () => set({user: null, authStatus: 'not-authenticated'}),
+  logout: async () => {
+    await AsyncStorage.removeItem(AppConstants.token);
+
+    set({user: null, authStatus: 'not-authenticated'});
+  },
 }));
