@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator<RootStackParams>()
 export function StackRouter() {
     return (
         <Stack.Navigator
-            initialRouteName='LoginScreen'
+            initialRouteName='LoadingScreen'
             screenOptions={{
                 headerShown: false,
                 animation: 'ios'
