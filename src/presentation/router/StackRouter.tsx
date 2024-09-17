@@ -17,6 +17,7 @@ export function StackRouter() {
             initialRouteName='LoginScreen'
             screenOptions={{
                 headerShown: false,
+                animation: 'ios'
             }}>
             <Stack.Screen name='LoadingScreen' component={LoadingScreen} />
             <Stack.Screen name='HomeScreen' component={HomeScreen} />
