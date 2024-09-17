@@ -3,6 +3,7 @@ import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import React, { useState } from 'react'
 import { Alert, ScrollView, useWindowDimensions } from 'react-native'
 import { AppIcon } from '../../components/ui'
+import { useForm } from '../../hooks'
 import { RootStackParams } from '../../router'
 import { useAuthStore } from '../../store'
 
@@ -10,7 +11,7 @@ interface Props extends NativeStackScreenProps<RootStackParams, 'LoginScreen'> {
 
 export function LoginScreen({ navigation, route }: Props) {
     const login = useAuthStore(state => state.login)
-    const [form, setForm] = useState({
+    const { email, password, updateForm } = useForm({
         email: '', password: ''
     })
     const [isPosting, setIsPosting] = useState(false)
@@ -18,11 +19,12 @@ export function LoginScreen({ navigation, route }: Props) {
     const { height } = useWindowDimensions()
 
     const onLogin = async () => {
-        const { email, password } = form
+        console.log({ email, password });
+
         setIsPosting(true)
         const isOK = await login(email, password)
         setIsPosting(false)
-        if (isOK) return console.warn('Yippie');
+        if (isOK) return;
         Alert.alert('Error', 'No se pudo autenticar al usuario')
     }
 
@@ -39,8 +41,8 @@ export function LoginScreen({ navigation, route }: Props) {
                     placeholder='Correo electrónico'
                     keyboardType='email-address'
                     autoCapitalize='none'
-                    value={form.email}
-                    onChangeText={email => setForm({ ...form, email })}
+                    value={email}
+                    onChangeText={updateForm('email')}
                     accessoryLeft={<AppIcon name='email-outline' />}
                 />
                 <Layout style={{ height: 10 }} />
@@ -48,8 +50,8 @@ export function LoginScreen({ navigation, route }: Props) {
                     placeholder='Contraseña'
                     autoCapitalize='none'
                     secureTextEntry
-                    value={form.password}
-                    onChangeText={password => setForm({ ...form, password })}
+                    value={password}
+                    onChangeText={updateForm('password')}
                     accessoryLeft={<AppIcon name='lock-outline' />}
                 />
                 <Layout style={{ height: 30 }} />

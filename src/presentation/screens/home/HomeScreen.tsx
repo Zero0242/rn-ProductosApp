@@ -8,10 +8,11 @@ interface Props extends NativeStackScreenProps<RootStackParams, 'HomeScreen'> { 
 
 export function HomeScreen({ navigation, route }: Props) {
     const logout = useAuthStore(state => state.logout)
+    const user = useAuthStore(state => state.user)
 
     return (
         <Layout>
-            <Text>HomeScreen</Text>
+            <Text>HomeScreen {user?.fullName ?? ''}</Text>
 
             <Button onPress={logout}>
                 Salir

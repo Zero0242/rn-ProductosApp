@@ -1,14 +1,30 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Button, Input, Layout, Text } from '@ui-kitten/components'
-import React from 'react'
-import { ScrollView, useWindowDimensions } from 'react-native'
+import React, { useState } from 'react'
+import { Alert, ScrollView, useWindowDimensions } from 'react-native'
 import { AppIcon } from '../../components/ui'
+import { useForm } from '../../hooks'
 import { RootStackParams } from '../../router'
+import { useAuthStore } from '../../store'
 
 interface Props extends NativeStackScreenProps<RootStackParams, 'RegisterScreen'> { }
 
 export function RegisterScreen({ navigation, route }: Props) {
     const { height } = useWindowDimensions()
+    const register = useAuthStore(state => state.register)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const { fullName, email, password, updateForm, formState } = useForm({
+        email: '', password: '', fullName: ''
+    })
+
+    const onRegister = async () => {
+        setIsLoading(true)
+        const isOK = await register(formState)
+        setIsLoading(false)
+        if (isOK) return;
+
+        Alert.alert('Error', 'No se pudo crear la cuenta')
+    }
 
     return (
         <Layout style={{ flex: 1 }}>
@@ -21,6 +37,8 @@ export function RegisterScreen({ navigation, route }: Props) {
                 <Input
                     placeholder='Nombre Completo'
                     autoCapitalize='words'
+                    value={fullName}
+                    onChangeText={updateForm('fullName')}
                     accessoryLeft={<AppIcon name='person-outline' />}
                 />
                 <Layout style={{ height: 10 }} />
@@ -28,6 +46,8 @@ export function RegisterScreen({ navigation, route }: Props) {
                     placeholder='Correo electrónico'
                     keyboardType='email-address'
                     autoCapitalize='none'
+                    value={email}
+                    onChangeText={updateForm('email')}
                     accessoryLeft={<AppIcon name='email-outline' />}
                 />
                 <Layout style={{ height: 10 }} />
@@ -35,13 +55,16 @@ export function RegisterScreen({ navigation, route }: Props) {
                     placeholder='Contraseña'
                     autoCapitalize='none'
                     secureTextEntry
+                    value={password}
+                    onChangeText={updateForm('password')}
                     accessoryLeft={<AppIcon name='lock-outline' />}
                 />
                 <Layout style={{ height: 30 }} />
                 {/* Acceso */}
                 <Button
+                    disabled={isLoading}
                     accessoryRight={<AppIcon name='arrow-forward-outline' white />}
-                    onPress={() => { }}
+                    onPress={onRegister}
                 >
                     Crear Cuenta
                 </Button>

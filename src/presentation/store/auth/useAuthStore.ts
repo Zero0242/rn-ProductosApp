@@ -16,7 +16,7 @@ interface AuthActions {
   register: (options: {
     email: string;
     password: string;
-    fullname: string;
+    fullName: string;
   }) => Promise<boolean>;
 }
 

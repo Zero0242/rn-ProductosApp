@@ -5,7 +5,7 @@ import {mapUserAsync} from './utils/map-user';
 interface Options {
   email: string;
   password: string;
-  fullname: string;
+  fullName: string;
 }
 
 export const registerUser = async (options: Options) => {
