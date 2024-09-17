@@ -1,14 +1,21 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { Button, Icon, Layout, Text } from '@ui-kitten/components'
 import React from 'react'
-import { Text, View } from 'react-native'
 import { RootStackParams } from '../../router'
 
 interface Props extends NativeStackScreenProps<RootStackParams, 'LoadingScreen'> { }
 
 export function LoadingScreen({ }: Props) {
     return (
-        <View>
+        <Layout style={{ flex: 1 }}>
             <Text>LoadingScreen</Text>
-        </View>
+
+            <Button
+                style={{ marginHorizontal: 12 }}
+                accessoryLeft={<Icon name='facebook' />}
+            >
+                Cerrar Sesión
+            </Button>
+        </Layout>
     )
 }

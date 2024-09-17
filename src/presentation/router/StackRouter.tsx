@@ -11,7 +11,9 @@ const Stack = createNativeStackNavigator<RootStackParams>()
 
 export function StackRouter() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+            headerShown: false,
+        }}>
             <Stack.Screen name='LoadingScreen' component={LoadingScreen} />
             <Stack.Screen name='HomeScreen' component={HomeScreen} />
         </Stack.Navigator>
