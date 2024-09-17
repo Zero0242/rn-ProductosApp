@@ -1,8 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {tesloApi} from '../../config/api/tesloApi';
-import {AppConstants} from '../../config/constants/app-constants';
 import {AuthResponse} from '../../infraestructure/interfaces/auth-response.interface';
-import {mapUser} from './utils/map-user';
+import {mapUserAsync} from './utils/map-user';
 
 interface Options {
   email: string;
@@ -17,11 +15,8 @@ export const registerUser = async (options: Options) => {
       '/api/auth/register',
       body,
     );
-    const {token, isActive: _, ...user} = data;
 
-    await AsyncStorage.setItem(AppConstants.token, token);
-
-    return mapUser(data);
+    return await mapUserAsync(data);
   } catch (error) {
     console.error(`No se pudo registrar al usuario : ${error}`);
     // throw new Error('No se pudo registrar al usuario');
