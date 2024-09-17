@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {tesloApi} from '../../config/api/tesloApi';
 import {AppConstants} from '../../config/constants/app-constants';
-import {User} from '../../domain/entities';
 import {AuthResponse} from '../../infraestructure/interfaces/auth-response.interface';
+import {mapUser} from './utils/map-user';
 
 interface Options {
   email: string;
@@ -10,7 +10,7 @@ interface Options {
   fullname: string;
 }
 
-export const registerUser = async (options: Options): Promise<User> => {
+export const registerUser = async (options: Options) => {
   try {
     const body = JSON.stringify(options);
     const {data} = await tesloApi.post<AuthResponse>(
@@ -21,8 +21,11 @@ export const registerUser = async (options: Options): Promise<User> => {
 
     await AsyncStorage.setItem(AppConstants.token, token);
 
-    return user;
+    return mapUser(data);
   } catch (error) {
-    throw new Error('No se pudo registrar al usuario');
+    console.error(`No se pudo registrar al usuario : ${error}`);
+    // throw new Error('No se pudo registrar al usuario');
+
+    return null;
   }
 };
