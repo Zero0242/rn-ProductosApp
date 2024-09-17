@@ -5,6 +5,9 @@ import {AppConstants} from '../constants/app-constants';
 
 const tesloApi: AxiosInstance = axios.create({
   baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // ? Referencia al api del calendario del curso de ReactJS
