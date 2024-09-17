@@ -7,7 +7,7 @@ Aplicacion conectada con server, para pruebas con react native
 1. AsyncStorage
 
 ```bash
-$ @react-native-async-storage/async-storage
+$ yarn add @react-native-async-storage/async-storage
 ```
 
 2. React Picker
@@ -20,6 +20,18 @@ $ yarn add @react-native-picker/picker
 
 ```bash
 $ yarn add react-native-image-picker
+```
+
+4. Axios
+
+```bash
+$ yarn add axios
+```
+
+5. Zustand
+
+```bash
+$ yarn add zustand
 ```
 
 # React Navigation
