@@ -10,5 +10,7 @@ module.exports = {
         path: '.env',
       },
     ],
+    // Esta seccion habilita el plugin de native wind
+    ['nativewind/babel'],
   ]
 };
