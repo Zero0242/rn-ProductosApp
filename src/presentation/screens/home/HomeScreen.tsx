@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { Button, Layout, Text } from '@ui-kitten/components'
-import React from 'react'
+import { Button, Text } from '@ui-kitten/components'
+import { MainLayout } from '../../layouts'
 import { RootStackParams } from '../../router'
 import { useAuthStore } from '../../store'
 
@@ -11,13 +11,19 @@ export function HomeScreen({ navigation, route }: Props) {
     const user = useAuthStore(state => state.user)
 
     return (
-        <Layout>
+        <MainLayout
+            title="Home"
+            subtitle="Bienvenido a la aplicación"
+        >
             <Text>HomeScreen {user?.fullName ?? ''}</Text>
 
             <Button onPress={logout}>
                 Salir
             </Button>
-        </Layout>
+            <Button onPress={() => navigation.navigate('ProductScreen', { productId: "asdasda" })}>
+                Next
+            </Button>
+        </MainLayout>
     )
 }
 
