@@ -34,6 +34,12 @@ $ yarn add axios
 $ yarn add zustand
 ```
 
+6. React Query
+
+```bash
+$ yarn add @tanstack/react-query
+```
+
 # React Navigation
 
 Libreria popular para manejar la navegacion en React Native, [documentación](https://reactnavigation.org/docs/getting-started). Las instalaciones a continuacion son la base para los diferentes tipos de navegación que maneja una app movil
