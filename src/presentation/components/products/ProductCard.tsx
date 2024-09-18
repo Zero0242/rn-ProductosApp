@@ -1,4 +1,4 @@
-import { Card } from '@ui-kitten/components'
+import { Card, Text } from '@ui-kitten/components'
 import React from 'react'
 import { Image } from 'react-native'
 import { Product } from '../../../domain/entities'
@@ -21,6 +21,13 @@ export function ProductCard({ product }: Props) {
                         style={{ height: 200, width: '100%' }}
                     />
             }
+
+            <Text
+                numberOfLines={2}
+                style={{ textAlign: 'center' }}
+            >
+                {product.title}
+            </Text>
 
         </Card>
     )

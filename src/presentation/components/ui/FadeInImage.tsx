@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     Animated,
+    Image,
     ImageStyle,
     StyleProp,
     View
@@ -16,6 +17,7 @@ interface Props {
 export const FadeInImage = ({ uri, style }: Props) => {
     const { animatedOpacity, fadeIn } = useAnimation();
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(false)
     const isMounted = useRef(true)
 
     useEffect(() => {
@@ -35,16 +37,29 @@ export const FadeInImage = ({ uri, style }: Props) => {
                 />
             )}
 
-            <Animated.Image
-                source={{ uri }}
-                onLoadEnd={() => {
-                    if (isMounted.current) {
-                        fadeIn({});
-                        setIsLoading(false);
-                    }
-                }}
-                style={[style, { opacity: animatedOpacity, objectFit: 'contain' }]}
-            />
+            {
+                error ? <Image
+                    source={require('../../../assets/no-product-image.png')}
+                    style={[style, { objectFit: 'contain' }]}
+                />
+                    : <Animated.Image
+                        source={{ uri }}
+                        onError={() => {
+                            if (isMounted.current) {
+                                fadeIn({});
+                                setIsLoading(false);
+                                setError(true)
+                            }
+                        }}
+                        onLoadEnd={() => {
+                            if (isMounted.current) {
+                                fadeIn({});
+                                setIsLoading(false);
+                            }
+                        }}
+                        style={[style, { opacity: animatedOpacity, objectFit: 'contain' }]}
+                    />
+            }
         </View>
     );
 };
