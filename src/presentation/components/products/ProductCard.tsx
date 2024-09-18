@@ -2,6 +2,7 @@ import { Card, Text } from '@ui-kitten/components'
 import React from 'react'
 import { Image } from 'react-native'
 import { Product } from '../../../domain/entities'
+import { useAppRouter } from '../../hooks'
 import { FadeInImage } from '../ui/FadeInImage'
 
 interface Props {
@@ -9,8 +10,9 @@ interface Props {
 }
 
 export function ProductCard({ product }: Props) {
+    const navigation = useAppRouter()
     return (
-        <Card style={{ flex: 1, margin: 3 }}>
+        <Card style={{ flex: 1, margin: 3 }} onPress={() => navigation.navigate('ProductScreen', { productId: product.id })}>
             {
                 product.images.length === 0 ? <Image
                     source={require('../../../assets/no-product-image.png')}

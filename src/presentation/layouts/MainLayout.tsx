@@ -6,7 +6,7 @@ import { useAppRouter } from "../hooks";
 
 interface Props {
     title: string
-    subtitle: string
+    subtitle?: string
     children: React.ReactNode
     actions?: {
         icon: string

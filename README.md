@@ -226,3 +226,7 @@ $ yarn add @ui-kitten/components @eva-design/eva react-native-svg
 # Eva Icons
 $ yarn add @ui-kitten/eva-icons react-native-svg
 ```
+
+#### TODO
+
+Guardar productos en caché
