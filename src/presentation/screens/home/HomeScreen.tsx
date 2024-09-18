@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useQuery } from '@tanstack/react-query'
-import { List, Text } from '@ui-kitten/components'
+import { List } from '@ui-kitten/components'
 import { getProductsByPage } from '../../../actions/products'
+import { ProductCard } from '../../components/products'
 import { FullLoad } from '../../components/ui'
 import { MainLayout } from '../../layouts'
 import { RootStackParams } from '../../router'
@@ -26,7 +27,7 @@ export function HomeScreen({ navigation, route }: Props) {
                         data={products}
                         numColumns={2}
                         keyExtractor={(item, index) => `${item.id}-${index}`}
-                        renderItem={({ item }) => <Text> Product {item.id} </Text>}
+                        renderItem={({ item }) => <ProductCard product={item} />}
                     />
             }
 
