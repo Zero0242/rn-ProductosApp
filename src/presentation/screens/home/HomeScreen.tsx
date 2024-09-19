@@ -5,10 +5,12 @@ import { ProductList } from '../../components/products'
 import { FullLoad } from '../../components/ui'
 import { MainLayout } from '../../layouts'
 import { RootStackParams } from '../../router'
+import { useAuthStore } from '../../store'
 
 interface Props extends NativeStackScreenProps<RootStackParams, 'HomeScreen'> { }
 
 export function HomeScreen({ navigation, route }: Props) {
+    const logout = useAuthStore(store => store.logout)
     const { isLoading, data, fetchNextPage } = useInfiniteQuery({
         queryKey: ['products', 'infinite'],
         staleTime: 1000 * 60 * 60,
@@ -23,6 +25,10 @@ export function HomeScreen({ navigation, route }: Props) {
         <MainLayout
             title="Home"
             subtitle="Bienvenido a la aplicación"
+            actions={{
+                icon: 'log-out-outline',
+                onPress: logout
+            }}
         >
             {
                 isLoading ? <FullLoad /> :
