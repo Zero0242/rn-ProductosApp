@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useQuery } from '@tanstack/react-query'
-import { Button, ButtonGroup, Input, Layout, useTheme } from '@ui-kitten/components'
+import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components'
+import { Formik } from 'formik'
 import React, { useRef } from 'react'
 import { Alert, FlatList, ScrollView } from 'react-native'
 import { getProductById } from '../../../actions/products'
@@ -40,108 +41,131 @@ export function ProductScreen({ route }: Props) {
     if (!product) return <MainLayout title='Cargando'><FullLoad /></MainLayout>
 
     return (
-        <MainLayout
-            title={product.title}
-            subtitle={`Precio: ${product.price}`}
+        <Formik
+            initialValues={product!}
+            onSubmit={(values) => console.log(values)}
         >
-            <ScrollView style={{ flex: 1 }}>
-                <Layout>
-                    <FlatList
-                        data={product.images}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={item => item}
-                        renderItem={({ item }) =>
-                            <FadeInImage
-                                uri={item}
-                                style={{ height: 300, width: 300, marginHorizontal: 5 }}
-                            />
-                        }
-                    />
-                </Layout>
-                <Layout style={{ marginHorizontal: 10 }}>
-                    <Input
-                        label={'Título'}
-                        value={product.title}
-                        style={{ marginVertical: 7 }}
-                    />
-                    <Input
-                        label={'Slug'}
-                        value={product.slug}
-                        style={{ marginVertical: 7 }}
-                    />
-                    <Input
-                        label={'Descripción'}
-                        value={product.description}
-                        numberOfLines={5}
-                        style={{ marginVertical: 7 }}
-                    />
-                </Layout>
-                {/* Precio e inventario */}
-                <Layout style={{ marginHorizontal: 15, flexDirection: 'row', gap: 10 }}>
-                    <Input
-                        label={'Precio'}
-                        value={product.price.toString()}
-                        style={{ flex: 1 }}
-                    />
-                    <Input
-                        label={'inventario'}
-                        value={product.stock.toString()}
-                        style={{ flex: 1 }}
-                    />
-                </Layout>
-                {/* Selectores */}
-                <ButtonGroup
-                    style={{ marginHorizontal: 15, marginTop: 20 }}
-                    appearance='outline'
-                    size='small'
-                >
-                    {
-                        sizes.map(size => (
-                            <Button
-                                key={size}
-                                onPress={() => console.log({ size })}
-                                style={{
-                                    flex: 1,
-                                    backgroundColor: true ? theme['color-primary-200'] : undefined
-                                }}
+            {
+                ({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
+                    <MainLayout
+                        title={values.title}
+                        subtitle={`Precio: ${values.price}`}
+                    >
+                        <ScrollView style={{ flex: 1 }}>
+                            <Layout>
+                                <FlatList
+                                    data={values.images}
+                                    horizontal
+                                    showsHorizontalScrollIndicator={false}
+                                    keyExtractor={item => item}
+                                    renderItem={({ item }) =>
+                                        <FadeInImage
+                                            uri={item}
+                                            style={{ height: 300, width: 300, marginHorizontal: 5 }}
+                                        />
+                                    }
+                                />
+                            </Layout>
+                            <Layout style={{ marginHorizontal: 10 }}>
+                                <Input
+                                    label={'Título'}
+                                    value={values.title}
+                                    onChangeText={handleChange('title')}
+                                    style={{ marginVertical: 7 }}
+                                />
+                                <Input
+                                    label={'Slug'}
+                                    value={values.slug}
+                                    onChangeText={handleChange('slug')}
+                                    style={{ marginVertical: 7 }}
+                                />
+                                <Input
+                                    label={'Descripción'}
+                                    value={values.description}
+                                    onChangeText={handleChange('description')}
+                                    numberOfLines={5}
+                                    style={{ marginVertical: 7 }}
+                                />
+                            </Layout>
+                            {/* Precio e inventario */}
+                            <Layout style={{ marginHorizontal: 15, flexDirection: 'row', gap: 10 }}>
+                                <Input
+                                    label={'Precio'}
+                                    value={values.price.toString()}
+                                    onChangeText={handleChange('price')}
+                                    style={{ flex: 1 }}
+                                />
+                                <Input
+                                    label={'inventario'}
+                                    value={values.stock.toString()}
+                                    onChangeText={handleChange('stock')}
+                                    style={{ flex: 1 }}
+                                />
+                            </Layout>
+                            {/* Selectores */}
+                            <ButtonGroup
+                                style={{ marginHorizontal: 15, marginTop: 20 }}
+                                appearance='outline'
+                                size='small'
                             >
-                                {size}
-                            </Button>
-                        ))
-                    }
-                </ButtonGroup>
-                <ButtonGroup
-                    style={{ marginHorizontal: 15, marginTop: 20 }}
-                    appearance='outline'
-                    size='small'
-                >
-                    {
-                        genders.map(gender => (
-                            <Button
-                                key={gender}
-                                onPress={() => console.log({ gender })}
-                                style={{
-                                    flex: 1,
-                                    backgroundColor: true ? theme['color-primary-200'] : undefined
-                                }}
+                                {
+                                    sizes.map(size => (
+                                        <Button
+                                            key={size}
+                                            onPress={() => {
+                                                const isSelected = values.sizes.includes(size)
+                                                const updatedSizes: Size[] =
+                                                    isSelected ?
+                                                        values.sizes.filter(s => s !== size) : [...values.sizes, size]
+                                                setFieldValue('sizes', updatedSizes)
+                                            }}
+                                            style={{
+                                                flex: 1,
+                                                backgroundColor: values.sizes.includes(size) ? theme['color-primary-200'] : undefined
+                                            }}
+                                        >
+                                            {size}
+                                        </Button>
+                                    ))
+                                }
+                            </ButtonGroup>
+                            <ButtonGroup
+                                style={{ marginHorizontal: 15, marginTop: 20 }}
+                                appearance='outline'
+                                size='small'
                             >
-                                {gender}
+                                {
+                                    genders.map(gender => (
+                                        <Button
+                                            key={gender}
+                                            onPress={() => setFieldValue('gender', gender)}
+                                            style={{
+                                                flex: 1,
+                                                backgroundColor: values.gender.includes(gender) ? theme['color-primary-200'] : undefined
+                                            }}
+                                        >
+                                            {gender}
+                                        </Button>
+                                    ))
+                                }
+                            </ButtonGroup>
+                            {/* Guardar */}
+                            <Button
+                                onPress={() => Alert.alert('Guardando')}
+                                accessoryLeft={<AppIcon name='save-outline' white />}
+                                style={{ marginHorizontal: 15, marginTop: 20 }}
+                            >
+                                Guardar
                             </Button>
-                        ))
-                    }
-                </ButtonGroup>
-                {/* Guardar */}
-                <Button
-                    onPress={() => Alert.alert('Guardando')}
-                    accessoryLeft={<AppIcon name='save-outline' white />}
-                    style={{ marginHorizontal: 15, marginTop: 20 }}
-                >
-                    Guardar
-                </Button>
+                            <Text>
+                                {JSON.stringify(values, null, 2)}
+                            </Text>
+                            <Layout style={{ height: 150 }} />
+                        </ScrollView>
+                    </MainLayout>
+                )
+            }
+        </Formik>
 
-                <Layout style={{ height: 150 }} />
-            </ScrollView>
-        </MainLayout>
     )
 }
