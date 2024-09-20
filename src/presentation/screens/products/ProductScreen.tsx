@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, ButtonGroup, Input, Layout, Text, useTheme } from '@ui-kitten/components'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Button, ButtonGroup, Input, Layout, useTheme } from '@ui-kitten/components'
 import { Formik } from 'formik'
 import React, { useRef } from 'react'
 import { FlatList, ScrollView } from 'react-native'
@@ -33,15 +33,25 @@ interface Props extends NativeStackScreenProps<RootStackParams, 'ProductScreen'>
 export function ProductScreen({ route }: Props) {
     const theme = useTheme()
     const productId = useRef(route.params.productId)
+    const queryClient = useQueryClient()
     const { data: product, isLoading } = useQuery({
-        queryKey: ['products', productId],
+        queryKey: ['products', productId.current],
         queryFn: () => getProductById(productId.current)
     })
 
     const mutation = useMutation({
         mutationFn: (data: Product) => updateCreateProduct({ ...data, id: productId.current }),
         onSuccess(data: Product) {
-            console.log({ data });
+            productId.current = data.id
+            queryClient.invalidateQueries({
+                queryKey: ['products', 'infinite'],
+            })
+            // Forma 1: eliminar key para que PIDA DE NUEVO el request
+            // queryClient.invalidateQueries({
+            //     queryKey: ['products', productId.current],
+            // })
+            // Forma 2: sacamos la data que llega al actualizar, y la mete al caché
+            queryClient.setQueryData(['products', data.id], data)
         },
     })
 
@@ -167,9 +177,6 @@ export function ProductScreen({ route }: Props) {
                             >
                                 Guardar
                             </Button>
-                            <Text>
-                                {JSON.stringify(values, null, 2)}
-                            </Text>
                             <Layout style={{ height: 150 }} />
                         </ScrollView>
                     </MainLayout>
