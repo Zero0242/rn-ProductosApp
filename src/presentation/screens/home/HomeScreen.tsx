@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { getProductsByPage } from '../../../actions/products'
 import { ProductList } from '../../components/products'
-import { FullLoad } from '../../components/ui'
+import { Fab, FullLoad } from '../../components/ui'
 import { MainLayout } from '../../layouts'
 import { RootStackParams } from '../../router'
 import { useAuthStore } from '../../store'
@@ -23,29 +23,39 @@ export function HomeScreen({ navigation, route }: Props) {
     })
 
     return (
-        <MainLayout
-            title="Home"
-            subtitle="Bienvenido a la aplicación"
-            actions={{
-                icon: 'log-out-outline',
-                onPress: logout
-            }}
-        >
-            {
-                isLoading ? <FullLoad /> :
-                    <ProductList
-                        onPullToRefresh={async () => {
-                            await new Promise(res => setTimeout(res, 200))
-                            queryClient.invalidateQueries({
-                                queryKey: ['products', 'infinite'],
-                            })
-                        }}
-                        products={data?.pages.flat() ?? []}
-                        fetchNextPage={fetchNextPage}
-                    />
-            }
-
-        </MainLayout>
+        <>
+            <MainLayout
+                title="Home"
+                subtitle="Bienvenido a la aplicación"
+                actions={{
+                    icon: 'log-out-outline',
+                    onPress: logout
+                }}
+            >
+                {
+                    isLoading ? <FullLoad /> :
+                        <ProductList
+                            onPullToRefresh={async () => {
+                                await new Promise(res => setTimeout(res, 200))
+                                queryClient.invalidateQueries({
+                                    queryKey: ['products', 'infinite'],
+                                })
+                            }}
+                            products={data?.pages.flat() ?? []}
+                            fetchNextPage={fetchNextPage}
+                        />
+                }
+            </MainLayout>
+            <Fab
+                iconName='plus'
+                style={{
+                    position: 'absolute',
+                    bottom: 30,
+                    right: 30
+                }}
+                onPress={() => navigation.navigate('ProductScreen', { productId: '' })}
+            />
+        </>
     )
 }
 
