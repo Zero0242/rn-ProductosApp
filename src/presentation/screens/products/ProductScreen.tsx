@@ -1,32 +1,16 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Button, ButtonGroup, Input, Layout, useTheme } from '@ui-kitten/components'
+import { Button, Input, Layout, useTheme } from '@ui-kitten/components'
 import { Formik } from 'formik'
 import React, { useRef } from 'react'
 import { ScrollView } from 'react-native'
 import { getProductById, updateCreateProduct } from '../../../actions/products'
-import { Gender, Product, Size } from '../../../domain/entities'
+import { AppConstants } from '../../../config/constants/app-constants'
+import { Product, Size } from '../../../domain/entities'
 import { ProductGallery } from '../../components/products'
-import { AppIcon, FullLoad } from '../../components/ui'
+import { AppIcon, FullLoad, MyButtonGroup } from '../../components/ui'
 import { MainLayout } from '../../layouts'
 import { RootStackParams } from '../../router'
-
-
-const sizes: Size[] = [
-    Size.Xxl,
-    Size.Xl,
-    Size.L,
-    Size.M,
-    Size.S,
-    Size.Xs,
-]
-
-const genders: Gender[] = [
-    Gender.Kid,
-    Gender.Unisex,
-    Gender.Men,
-    Gender.Women,
-]
 
 interface Props extends NativeStackScreenProps<RootStackParams, 'ProductScreen'> { }
 
@@ -46,11 +30,6 @@ export function ProductScreen({ route }: Props) {
             queryClient.invalidateQueries({
                 queryKey: ['products', 'infinite'],
             })
-            // Forma 1: eliminar key para que PIDA DE NUEVO el request
-            // queryClient.invalidateQueries({
-            //     queryKey: ['products', productId.current],
-            // })
-            // Forma 2: sacamos la data que llega al actualizar, y la mete al caché
             queryClient.setQueryData(['products', data.id], data)
         },
     })
@@ -63,7 +42,7 @@ export function ProductScreen({ route }: Props) {
             onSubmit={mutation.mutate}
         >
             {
-                ({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
+                ({ handleChange, handleSubmit, values, setFieldValue }) => (
                     <MainLayout
                         title={values.title}
                         subtitle={`Precio: ${values.price}`}
@@ -109,52 +88,27 @@ export function ProductScreen({ route }: Props) {
                                 />
                             </Layout>
                             {/* Selectores */}
-                            <ButtonGroup
+                            <MyButtonGroup
                                 style={{ marginHorizontal: 15, marginTop: 20 }}
-                                appearance='outline'
-                                size='small'
-                            >
-                                {
-                                    sizes.map(size => (
-                                        <Button
-                                            key={size}
-                                            onPress={() => {
-                                                const isSelected = values.sizes.includes(size)
-                                                const updatedSizes: Size[] =
-                                                    isSelected ?
-                                                        values.sizes.filter(s => s !== size) : [...values.sizes, size]
-                                                setFieldValue('sizes', updatedSizes)
-                                            }}
-                                            style={{
-                                                flex: 1,
-                                                backgroundColor: values.sizes.includes(size) ? theme['color-primary-200'] : undefined
-                                            }}
-                                        >
-                                            {size}
-                                        </Button>
-                                    ))
-                                }
-                            </ButtonGroup>
-                            <ButtonGroup
+                                data={AppConstants.sizes}
+                                keyExtractor={size => size}
+                                labelBuilder={size => size}
+                                selectedPredicate={size => values.sizes.includes(size)}
+                                onButtonPress={(size, isSelected) => {
+                                    const updatedSizes: Size[] =
+                                        isSelected ?
+                                            values.sizes.filter(s => s !== size) : [...values.sizes, size]
+                                    setFieldValue('sizes', updatedSizes)
+                                }}
+                            />
+                            <MyButtonGroup
                                 style={{ marginHorizontal: 15, marginTop: 20 }}
-                                appearance='outline'
-                                size='small'
-                            >
-                                {
-                                    genders.map(gender => (
-                                        <Button
-                                            key={gender}
-                                            onPress={() => setFieldValue('gender', gender)}
-                                            style={{
-                                                flex: 1,
-                                                backgroundColor: values.gender.includes(gender) ? theme['color-primary-200'] : undefined
-                                            }}
-                                        >
-                                            {gender}
-                                        </Button>
-                                    ))
-                                }
-                            </ButtonGroup>
+                                data={AppConstants.genders}
+                                keyExtractor={gender => gender}
+                                labelBuilder={gender => gender}
+                                selectedPredicate={gender => values.gender.includes(gender)}
+                                onButtonPress={(gender) => setFieldValue('gender', gender)}
+                            />
                             {/* Guardar */}
                             <Button
                                 disabled={mutation.isPending}

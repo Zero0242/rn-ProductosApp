@@ -1,15 +1,16 @@
 import { Layout } from '@ui-kitten/components'
 import React from 'react'
-import { FlatList, Image } from 'react-native'
+import { FlatList, Image, StyleProp, ViewStyle } from 'react-native'
 import { FadeInImage } from '../ui'
 
 interface Props {
     images: string[]
+    style?: StyleProp<ViewStyle>
 }
 
-export function ProductGallery({ images }: Props) {
+export function ProductGallery({ images, style }: Props) {
     return (
-        <Layout>
+        <Layout style={style}>
             {
                 /* Esto es para usar la imagen x defecto que tira con el error */
                 images.length === 0 ? (
