@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Button, Input, Layout, useTheme } from '@ui-kitten/components'
+import { Button, Input, Layout } from '@ui-kitten/components'
 import { Formik } from 'formik'
 import React, { useRef } from 'react'
 import { ScrollView } from 'react-native'
@@ -15,10 +15,9 @@ import { RootStackParams } from '../../router'
 interface Props extends NativeStackScreenProps<RootStackParams, 'ProductScreen'> { }
 
 export function ProductScreen({ route }: Props) {
-    const theme = useTheme()
     const productId = useRef(route.params.productId)
     const queryClient = useQueryClient()
-    const { data: product, isLoading } = useQuery({
+    const { data: product } = useQuery({
         queryKey: ['products', productId.current],
         queryFn: () => getProductById(productId.current)
     })
@@ -46,6 +45,10 @@ export function ProductScreen({ route }: Props) {
                     <MainLayout
                         title={values.title}
                         subtitle={`Precio: ${values.price}`}
+                        actions={{
+                            icon: 'camera-outline',
+                            onPress: () => console.log('Seleccionando imagen')
+                        }}
                     >
                         <ScrollView style={{ flex: 1 }}>
                             <ProductGallery images={values.images} />
