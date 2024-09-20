@@ -10,31 +10,25 @@ Aplicacion conectada con server, para pruebas con react native
 $ yarn add @react-native-async-storage/async-storage
 ```
 
-2. React Picker
+2. React Picker { combo-boxes }
 
 ```bash
 $ yarn add @react-native-picker/picker
 ```
 
-3. React Image Picker
-
-```bash
-$ yarn add react-native-image-picker
-```
-
-4. Axios
+3. Axios
 
 ```bash
 $ yarn add axios
 ```
 
-5. Zustand
+4. Zustand
 
 ```bash
 $ yarn add zustand
 ```
 
-6. React Query
+5. React Query
 
 ```bash
 $ yarn add @tanstack/react-query
@@ -227,6 +221,25 @@ $ yarn add @ui-kitten/components @eva-design/eva react-native-svg
 $ yarn add @ui-kitten/eva-icons react-native-svg
 ```
 
-#### TODO
+# React Image Picker
 
-Guardar productos en caché
+Instalar los paquetes necesarios, de esta [libreria](https://www.npmjs.com/package/react-native-image-picker)
+
+```bash
+$ yarn add react-native-image-picker
+```
+
+## iOS
+
+Configurar permisos de ios en `info.plist`
+
+```xml
+    <!-- Permisos -->
+	<key>NSCameraUsageDescription</key>
+	<string>Para seleccionar fotos de la galería para publicar en la app</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Para seleccionar fotos de la galería para publicar en la app</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Para seleccionar fotos de la galería para publicar en la app</string>
+	<!--  -->
+```

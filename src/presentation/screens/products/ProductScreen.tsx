@@ -6,6 +6,7 @@ import React, { useRef } from 'react'
 import { ScrollView } from 'react-native'
 import { getProductById, updateCreateProduct } from '../../../actions/products'
 import { AppConstants } from '../../../config/constants/app-constants'
+import { CameraPlugin } from '../../../config/plugins'
 import { Product, Size } from '../../../domain/entities'
 import { ProductGallery } from '../../components/products'
 import { AppIcon, FullLoad, MyButtonGroup } from '../../components/ui'
@@ -47,7 +48,10 @@ export function ProductScreen({ route }: Props) {
                         subtitle={`Precio: ${values.price}`}
                         actions={{
                             icon: 'camera-outline',
-                            onPress: () => console.log('Seleccionando imagen')
+                            onPress: async () => {
+                                const photos = await CameraPlugin.takePicture()
+                                setFieldValue('images', [...values.images, ...photos])
+                            }
                         }}
                     >
                         <ScrollView style={{ flex: 1 }}>
