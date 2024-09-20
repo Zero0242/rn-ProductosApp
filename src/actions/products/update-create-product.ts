@@ -20,7 +20,7 @@ export const updateCreateProduct = (
 
 async function createProduct(product: Partial<Product>): Promise<Product> {
   const {images = [], id: _, ...rest} = product;
-  const parsedImages: string[] = trimImages(images);
+  const parsedImages: string[] = await trimImages(images);
 
   try {
     const {data} = await tesloApi.post<TesloProduct>(`/api/products`, {
@@ -41,7 +41,7 @@ async function createProduct(product: Partial<Product>): Promise<Product> {
 async function updateProduct(product: Partial<Product>) {
   const {images = [], id, ...rest} = product;
 
-  const parsedImages: string[] = trimImages(images);
+  const parsedImages: string[] = await trimImages(images);
   try {
     const {data} = await tesloApi.patch<TesloProduct>(`/api/products/${id}`, {
       images: parsedImages,
@@ -57,7 +57,42 @@ async function updateProduct(product: Partial<Product>) {
     throw new Error(`No se pudo actualizar el producto con id ${id}`);
   }
 }
+async function uploadImages(imagePath: string): Promise<string> {
+  const formData = new FormData();
+  const fileToUpload = {
+    uri: imagePath,
+    name: imagePath.split('/').pop()!,
+  };
+  formData.append('file', fileToUpload);
 
-const trimImages = (values: string[]) => {
-  return values.map(e => e.split('/').pop() ?? '');
+  try {
+    const {data} = await tesloApi.postForm<{image: string}>(
+      '/api/files/product',
+      formData,
+    );
+    console.log({data});
+
+    return data.image;
+  } catch (error) {
+    console.error(`Errores ${error}`);
+    if (isAxiosError(error)) {
+      console.error(error.response?.data);
+    }
+    throw new Error('No se pudo subir la imagen :(');
+  }
+}
+
+const trimImages = async (values: string[]): Promise<string[]> => {
+  const previousImages = values.filter(e => !e.startsWith('file'));
+  const newImages = values.filter(e => e.startsWith('file'));
+  console.log({newImages, previousImages});
+
+  let parsedImages: string[] = [];
+
+  const promises = newImages.map(uploadImages);
+  const responses = await Promise.all(promises);
+  parsedImages = [...previousImages, ...responses];
+  console.log({parsedImages});
+
+  return parsedImages.map(e => e.split('/').pop() ?? '');
 };
