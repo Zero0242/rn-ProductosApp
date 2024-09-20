@@ -7,14 +7,15 @@ import { ProductCard } from './ProductCard'
 interface Props {
     products: Product[]
     fetchNextPage: () => void
+    onPullToRefresh?: () => Promise<void>
 }
 
-export function ProductList({ products, fetchNextPage }: Props) {
+export function ProductList({ products, fetchNextPage, onPullToRefresh }: Props) {
     const [isLoading, setIsLoading] = useState(false)
 
     const onRefresh = async () => {
         setIsLoading(true)
-        await new Promise(res => setTimeout(res, 2000))
+        onPullToRefresh && await onPullToRefresh()
         setIsLoading(false)
     }
 

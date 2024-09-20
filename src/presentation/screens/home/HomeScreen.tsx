@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { getProductsByPage } from '../../../actions/products'
 import { ProductList } from '../../components/products'
 import { FullLoad } from '../../components/ui'
@@ -11,6 +11,7 @@ interface Props extends NativeStackScreenProps<RootStackParams, 'HomeScreen'> { 
 
 export function HomeScreen({ navigation, route }: Props) {
     const logout = useAuthStore(store => store.logout)
+    const queryClient = useQueryClient()
     const { isLoading, data, fetchNextPage } = useInfiniteQuery({
         queryKey: ['products', 'infinite'],
         staleTime: 1000 * 60 * 60,
@@ -33,6 +34,12 @@ export function HomeScreen({ navigation, route }: Props) {
             {
                 isLoading ? <FullLoad /> :
                     <ProductList
+                        onPullToRefresh={async () => {
+                            await new Promise(res => setTimeout(res, 200))
+                            queryClient.invalidateQueries({
+                                queryKey: ['products', 'infinite'],
+                            })
+                        }}
                         products={data?.pages.flat() ?? []}
                         fetchNextPage={fetchNextPage}
                     />
