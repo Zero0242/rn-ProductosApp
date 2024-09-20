@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { getProductsByPage } from '../../../actions/products'
+import { AppConstants } from '../../../config/constants/app-constants'
 import { ProductList } from '../../components/products'
 import { Fab, FullLoad } from '../../components/ui'
 import { MainLayout } from '../../layouts'
@@ -16,9 +17,7 @@ export function HomeScreen({ navigation, route }: Props) {
         queryKey: ['products', 'infinite'],
         staleTime: 1000 * 60 * 60,
         initialPageParam: 0,
-        queryFn: async (params) => {
-            return await getProductsByPage(params.pageParam)
-        },
+        queryFn: (params) => getProductsByPage(params.pageParam),
         getNextPageParam: (lastPage, allPages) => allPages.length,
     })
 
@@ -53,7 +52,7 @@ export function HomeScreen({ navigation, route }: Props) {
                     bottom: 30,
                     right: 30
                 }}
-                onPress={() => navigation.navigate('ProductScreen', { productId: '' })}
+                onPress={() => navigation.navigate('ProductScreen', { productId: AppConstants.blankProduct })}
             />
         </>
     )

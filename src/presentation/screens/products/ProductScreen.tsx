@@ -3,11 +3,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Button, ButtonGroup, Input, Layout, useTheme } from '@ui-kitten/components'
 import { Formik } from 'formik'
 import React, { useRef } from 'react'
-import { FlatList, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import { getProductById, updateCreateProduct } from '../../../actions/products'
 import { Gender, Product, Size } from '../../../domain/entities'
+import { ProductGallery } from '../../components/products'
 import { AppIcon, FullLoad } from '../../components/ui'
-import { FadeInImage } from '../../components/ui/FadeInImage'
 import { MainLayout } from '../../layouts'
 import { RootStackParams } from '../../router'
 
@@ -69,20 +69,7 @@ export function ProductScreen({ route }: Props) {
                         subtitle={`Precio: ${values.price}`}
                     >
                         <ScrollView style={{ flex: 1 }}>
-                            <Layout>
-                                <FlatList
-                                    data={values.images}
-                                    horizontal
-                                    showsHorizontalScrollIndicator={false}
-                                    keyExtractor={item => item}
-                                    renderItem={({ item }) =>
-                                        <FadeInImage
-                                            uri={item}
-                                            style={{ height: 300, width: 300, marginHorizontal: 5 }}
-                                        />
-                                    }
-                                />
-                            </Layout>
+                            <ProductGallery images={values.images} />
                             <Layout style={{ marginHorizontal: 10 }}>
                                 <Input
                                     label={'Título'}
