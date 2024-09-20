@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { Button, Input, Layout, Text } from '@ui-kitten/components'
+import { Button, Layout, Text } from '@ui-kitten/components'
 import React, { useState } from 'react'
 import { Alert, ScrollView, useWindowDimensions } from 'react-native'
 import { z } from 'zod'
-import { AppIcon } from '../../components/ui'
+import { AppIcon, MyInput } from '../../components/ui'
 import { useForm } from '../../hooks'
 import { RootStackParams } from '../../router'
 import { useAuthStore } from '../../store'
@@ -21,7 +21,7 @@ export function LoginScreen({ navigation, route }: Props) {
         email: '', password: ''
     })
     const [isPosting, setIsPosting] = useState(false)
-
+    const [hidePassword, setHidePassword] = useState(true)
     const { height } = useWindowDimensions()
 
     const onLogin = async () => {
@@ -47,7 +47,7 @@ export function LoginScreen({ navigation, route }: Props) {
                     <Text category='p2'>Por favor, ingrese para continuar</Text>
                 </Layout>
                 <Layout style={{ height: 20 }} />
-                <Input
+                <MyInput
                     placeholder='Correo electrónico'
                     keyboardType='email-address'
                     autoCapitalize='none'
@@ -56,13 +56,13 @@ export function LoginScreen({ navigation, route }: Props) {
                     accessoryLeft={<AppIcon name='email-outline' />}
                 />
                 <Layout style={{ height: 10 }} />
-                <Input
+                <MyInput
                     placeholder='Contraseña'
                     autoCapitalize='none'
-                    secureTextEntry
                     value={password}
                     onChangeText={updateForm('password')}
                     accessoryLeft={<AppIcon name='lock-outline' />}
+                    showIcon
                 />
                 <Layout style={{ height: 30 }} />
                 {/* Acceso */}
