@@ -1,8 +1,14 @@
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
-  env: {
-    production: {
-      plugins: ['react-native-paper/babel'],
-    },
-  },
+  presets: ['module:@react-native/babel-preset'],
+  plugins: [
+    [
+      'module:react-native-dotenv',
+      // Configuraciones de entorno
+      {
+        envName: 'APP_ENV',
+        moduleName: '@env',
+        path: '.env',
+      },
+    ],
+  ]
 };
