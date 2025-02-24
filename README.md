@@ -1,50 +1,61 @@
-# Welcome to your Expo app 👋
+<p align="center">
+  <a href="https://reactnative.dev/" target="blank">
+  <img src="https://cdn.worldvectorlogo.com/logos/react-native-1.svg" width="200" alt="App Logo" /></a>
+</p>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Proyecto Productos
 
-## Get started
+Remake de app del curso de ReactNative con Expo Go
 
-1. Install dependencies
+> Creado en React Native
 
-   ```bash
-   npm install
-   ```
+## DEV
 
-2. Start the app
+1. Clonar repositorio con `git clone`
+2. Instalar los paquetes de React Native con `npm install`
+3. Ejecutar el proyecto con `npm run start`
 
-   ```bash
-    npx expo start
-   ```
+## Requisitos
 
-In the output, you'll find options to open the app in a
+1. Tener instalado React Native
+2. Instalar Android Studio
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Scripts
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Algunos scripts que pueden ser utilizados
 
-## Get a fresh project
+| Comando                                          | Descripcion                                                       |
+| ------------------------------------------------ | ----------------------------------------------------------------- |
+| `npm install`                                    | Instala las dependencias                                          |
+| `npm run start`                                  | Inicia el modo debug                                              |
+| `npx expo prebuild`                              | (EXPO): precompilar app                                           |
+| `rm -rf node_modules`                            | Limpia las dependencias                                           |
+| `cd android && ./gradlew assembleDebug && cd ..` | Crea un apk de desarrollo, requiere carpeta `android`             |
+| `cd android && ./gradlew clean && cd ..`         | Limpieza del caché de android, requiere carpeta `android`         |
+| `npx react-native build-android --mode=release`  | Crea el bundle de tienda para Android, requiere carpeta `android` |
 
-When you're ready, run:
+#### Otros Scripts
+
+Otros scripts que pueden usar para fines de desarrollo, (acciones de paquetes)
+
+| Comando | Descripcion                                                                |
+| ------- | -------------------------------------------------------------------------- |
+| `....`  | Insertar scripts que usen los paquetes de terceros si es necesario hacerlo |
+
+## Documentacion
+
+Links de librerias utilizadas
+
+- [React Native]("https://reactnative.dev/")
+
+## PROD
+
+- Generar un keystore para poder subir la app
 
 ```bash
-npm run reset-project
+# Generar key para subidas
+keytool -genkey -v -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+# Pasar el key a base64 (para ci cd)
+base64 -i my-upload-key.keystore -o my-upload-key-base64.txt
+base64 -i key.properties -o key-properties-base64.txt
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
