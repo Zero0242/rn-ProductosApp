@@ -24,14 +24,16 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 			await StoragePlugin.setItem(AppConstants.JWT_KEY, result.token);
 			set({ stage: "authenticated", user: result.user });
 		} else {
-			get().logout();
+			set({ stage: "not-authenticated" });
 		}
 	},
 	async login(email, password) {
-		const result = await AuthActions.login();
-		if (result) {
+		const result = await AuthActions.login({ email, password });
+		if (result != null) {
 			await StoragePlugin.setItem(AppConstants.JWT_KEY, result.token);
 			set({ stage: "authenticated", user: result.user });
+		} else {
+			set({ stage: "not-authenticated" });
 		}
 	},
 	async logout() {

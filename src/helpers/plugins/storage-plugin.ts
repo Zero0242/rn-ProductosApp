@@ -7,7 +7,7 @@ export class StoragePlugin {
 	}
 
 	static async setItem(key: string, value: string): Promise<boolean> {
-		console.log(`Guardando ${key}: ${value}`);
+		console.log(`Guardando [${key}]: ${value}`);
 
 		await store.setItem(key, value);
 		return true;

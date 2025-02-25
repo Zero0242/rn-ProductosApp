@@ -1,6 +1,4 @@
-import { AppConstants } from '@/src/config'
 import { AuthActions } from '@/src/core/auth'
-import { StoragePlugin } from '@/src/helpers/plugins'
 import { useRouter } from 'expo-router'
 import { Formik } from 'formik'
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
@@ -19,7 +17,6 @@ export default function SignUp() {
     const onRegister = async (formulario: any) => {
         const response = await AuthActions.register(formulario)
         if (response != null) {
-            await StoragePlugin.setItem(AppConstants.JWT_KEY, response.token)
             toast.success('Cuenta registrada con exito')
             return navigation.back();
         }
