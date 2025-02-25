@@ -1,10 +1,19 @@
-import { Stack } from 'expo-router';
+import { useAuthStore } from '@/src/presentation/auth';
+import { FullScreenLoader } from '@/src/presentation/shared';
+import { Redirect, Stack } from 'expo-router';
 import React, { useEffect } from 'react';
 
 export default function Layout() {
+    const { stage, checkToken } = useAuthStore()
+
     useEffect(() => {
-        console.log('Inicializando carga de datos');
+        checkToken()
     }, [])
+
+    if (stage === 'checking') return <FullScreenLoader />
+    if (stage === 'not-authenticated') {
+        return <Redirect href={"/auth/login"} />
+    }
 
     return (
         <Stack>
