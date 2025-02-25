@@ -30,8 +30,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 	async login(email, password) {
 		const result = await AuthActions.login({ email, password });
 		if (result != null) {
-			await StoragePlugin.setItem(AppConstants.JWT_KEY, result.token);
 			set({ stage: "authenticated", user: result.user });
+			await StoragePlugin.setItem(AppConstants.JWT_KEY, result.token);
 		} else {
 			set({ stage: "not-authenticated" });
 		}

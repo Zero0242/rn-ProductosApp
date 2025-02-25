@@ -13,11 +13,14 @@ export default function Login() {
                 style={styles.textInput}
                 value={values.email}
                 onChangeText={handleChange('email')}
+                autoCapitalize='none'
+                keyboardType='email-address'
             />
             <TextInput
                 style={styles.textInput}
                 value={values.password}
                 onChangeText={handleChange('password')}
+                secureTextEntry
             />
             <Pressable
                 style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1, ...styles.button })}
