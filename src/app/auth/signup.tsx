@@ -14,9 +14,9 @@ export default function SignUp() {
                 <Text style={{ fontFamily: 'SpaceMono', color: 'white' }}>Registrar</Text>
             </Pressable>
             <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                <Text style={{ fontFamily: 'SpaceMono', fontSize: 12 }}>Ya tienes cuenta?</Text>
+                <Text style={{ fontFamily: 'SpaceMono', fontSize: 12 }}>¿Ya tienes cuenta?</Text>
                 <Pressable onPress={() => navigation.back()}>
-                    <Text style={{ fontFamily: 'SpaceMono', color: 'blue', fontSize: 12 }}>Registrate acá</Text>
+                    <Text style={{ fontFamily: 'SpaceMono', color: 'blue', fontSize: 12 }}>Ingresa acá</Text>
                 </Pressable>
             </View>
         </View>

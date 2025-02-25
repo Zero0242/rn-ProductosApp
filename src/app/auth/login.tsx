@@ -12,7 +12,7 @@ export default function Login() {
                 <Text style={{ fontFamily: 'SpaceMono', color: 'white' }}>Ingresar</Text>
             </Pressable>
             <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                <Text style={{ fontFamily: 'SpaceMono', fontSize: 12 }}>No tienes cuenta?</Text>
+                <Text style={{ fontFamily: 'SpaceMono', fontSize: 12 }}>¿No tienes cuenta?</Text>
                 <Link href={'/auth/signup'} asChild>
                     <Text style={{ fontFamily: 'SpaceMono', color: 'blue', fontSize: 12 }}>Registrate acá</Text>
                 </Link>
