@@ -1,10 +1,9 @@
 import { ProductCard, useProductFetch } from '@/src/presentation/products'
 import React from 'react'
-import { View } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
+import { FlatList, RefreshControl, View } from 'react-native'
 
 export default function Index() {
-    const { products, getNextPage } = useProductFetch()
+    const { products, getNextPage, isRefreshing, refreshProducts } = useProductFetch()
 
     return (
         <View>
@@ -15,6 +14,13 @@ export default function Index() {
                 renderItem={({ item }) => <ProductCard product={item} />}
                 onEndReachedThreshold={0.8}
                 onEndReached={() => getNextPage()}
+                ListFooterComponent={<View style={{ height: 120 }} />}
+                refreshControl={
+                    <RefreshControl
+                        onRefresh={() => refreshProducts()}
+                        refreshing={isRefreshing}
+                    />
+                }
             />
         </View>
     )
