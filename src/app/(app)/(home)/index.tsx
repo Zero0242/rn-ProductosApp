@@ -1,4 +1,5 @@
 import { ProductCard, useProductFetch } from '@/src/presentation/products'
+import { FloatingActionButton } from '@/src/presentation/shared'
 import React from 'react'
 import { FlatList, RefreshControl, View } from 'react-native'
 
@@ -6,7 +7,7 @@ export default function Index() {
     const { products, getNextPage, isRefreshing, refreshProducts } = useProductFetch()
 
     return (
-        <View>
+        <>
             <FlatList
                 numColumns={2}
                 keyExtractor={({ id }, index) => id + `-${index}`}
@@ -22,7 +23,11 @@ export default function Index() {
                     />
                 }
             />
-        </View>
+            <FloatingActionButton
+                iconName='add'
+                onPress={() => console.log('Agregando nuevo producto')}
+            />
+        </>
     )
 }
 
