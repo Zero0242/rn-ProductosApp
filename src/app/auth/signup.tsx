@@ -26,6 +26,7 @@ export default function SignUp() {
                 onChangeText={handleChange('password')}
                 value={values.password}
                 placeholder='Ingresa tu Contraseña'
+                autoCapitalize='none'
                 secureTextEntry
                 errorText={errors.password} />
 

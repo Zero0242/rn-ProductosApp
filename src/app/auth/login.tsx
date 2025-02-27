@@ -21,6 +21,7 @@ export default function Login() {
                 value={values.password}
                 placeholder='Contraseña'
                 onChangeText={handleChange('password')}
+                autoCapitalize='none'
                 secureTextEntry
             />
             <FormButton onPress={() => handleSubmit()}>
