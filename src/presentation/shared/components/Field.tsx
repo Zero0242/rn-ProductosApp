@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: 'black',
         borderWidth: 1,
+        backgroundColor: 'white',
         width: '100%',
         marginVertical: 10,
         fontFamily: 'SpaceMono',
