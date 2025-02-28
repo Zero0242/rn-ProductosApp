@@ -10,11 +10,11 @@ interface AuthState {
 	user?: User;
 	// * Methods
 	checkToken: () => Promise<void>;
-	login: (email: string, password: string) => Promise<void>;
+	login: (token: string, user: User) => Promise<void>;
 	logout: () => Promise<void>;
 }
 
-export const useAuthStore = create<AuthState>()((set, get) => ({
+export const useAuthStore = create<AuthState>()((set) => ({
 	stage: "checking",
 	user: undefined,
 	// * Methods
@@ -27,14 +27,9 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 			set({ stage: "not-authenticated" });
 		}
 	},
-	async login(email, password) {
-		const result = await AuthActions.login({ email, password });
-		if (result != null) {
-			set({ stage: "authenticated", user: result.user });
-			await StoragePlugin.setItem(AppConstants.JWT_KEY, result.token);
-		} else {
-			set({ stage: "not-authenticated" });
-		}
+	async login(token, user) {
+		set({ stage: "authenticated", user });
+		await StoragePlugin.setItem(AppConstants.JWT_KEY, token);
 	},
 	async logout() {
 		await StoragePlugin.deleteItem(AppConstants.JWT_KEY);
