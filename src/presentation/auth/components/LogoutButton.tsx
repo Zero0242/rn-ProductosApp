@@ -1,15 +1,14 @@
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import React from "react";
-import { Alert, Text, TouchableOpacity } from 'react-native';
+import { Alert, Pressable, StyleSheet } from 'react-native';
 import { useAuthStore } from '../store/useAuthStore';
 
 export function LogoutButton() {
     const { logout } = useAuthStore()
 
-    const handleLogout = () => {
-        console.log('Prompt de prueba');
-        Haptics.notificationAsync()
+    const handleLogout = async () => {
+        await Haptics.notificationAsync()
         Alert.alert('¿Cerrar Sesión?', 'Confirma que quiere salir',
             [
                 {
@@ -26,9 +25,21 @@ export function LogoutButton() {
     }
 
     return (
-        <TouchableOpacity style={{ flexDirection: 'row', paddingRight: 8 }} onPress={handleLogout}>
-            <Text style={{ color: 'red' }}>Salir </Text>
-            <Icon name='exit-to-app' size={20} color={'red'} />
-        </TouchableOpacity>
+        <Pressable
+            style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1, ...styles.baseButton })}
+            onPress={() => handleLogout()}>
+            <Icon name='exit-to-app' size={20} color={'white'} />
+        </Pressable>
     )
 }
+
+const styles = StyleSheet.create({
+    baseButton: {
+        flexDirection: 'row',
+        gap: 2,
+        paddingVertical: 8,
+        paddingHorizontal: 15,
+        backgroundColor: 'red',
+        borderRadius: 100
+    }
+})
