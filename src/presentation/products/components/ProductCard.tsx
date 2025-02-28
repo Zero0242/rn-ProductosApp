@@ -1,6 +1,7 @@
 import { Product } from "@/src/core/products"
 import { useRouter } from "expo-router"
-import { Image, Text, TouchableWithoutFeedback, View } from "react-native"
+import { Text, TouchableWithoutFeedback, View } from "react-native"
+import { PrimaryImage } from "../../shared"
 
 interface Props {
     product: Product
@@ -8,11 +9,12 @@ interface Props {
 
 export function ProductCard({ product }: Props) {
     const router = useRouter()
+
     return (
         <TouchableWithoutFeedback onPress={() => router.push(`/product/${product.id}`)}>
             <View style={{ flex: 1, margin: 3 }} >
-                <Image
-                    src={product.images[0]}
+                <PrimaryImage
+                    images={product.images}
                     style={{ height: 200, width: '100%' }}
                 />
                 <Text
@@ -25,3 +27,4 @@ export function ProductCard({ product }: Props) {
         </TouchableWithoutFeedback>
     )
 }
+

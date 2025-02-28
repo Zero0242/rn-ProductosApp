@@ -16,17 +16,22 @@ export default function Layout() {
     }
 
     return (
-        <Stack>
+        <Stack screenOptions={{ headerTitleStyle: { fontFamily: 'SpaceMono' } }}>
             <Stack.Screen
                 name='(home)/index'
                 options={{
                     title: 'Productos',
+                    headerTitleAlign: 'center',
                     headerRight: () => <LogoutButton />
                 }}
             />
             <Stack.Screen
                 name='product/[id]'
-                options={{ title: 'Producto' }}
+                options={{
+                    title: 'Producto',
+                    headerTitleAlign: 'center',
+                    headerTitleStyle: { fontSize: 15 }
+                }}
             />
         </Stack>
     )

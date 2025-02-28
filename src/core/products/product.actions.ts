@@ -13,6 +13,12 @@ export class ProductActions {
 
 		return data.map(mapProduct);
 	}
+
+	static async getOneProduct(uid: string): Promise<Product> {
+		const { data } = await apiClient.get<Product>(`/api/products/${uid}`);
+
+		return mapProduct(data);
+	}
 }
 
 function mapProduct(product: Product): Product {
