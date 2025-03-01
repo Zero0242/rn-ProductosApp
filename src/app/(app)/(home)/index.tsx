@@ -1,9 +1,11 @@
 import { ProductCard, useProductFetch } from '@/src/presentation/products'
 import { FloatingActionButton } from '@/src/presentation/shared'
+import { useRouter } from 'expo-router'
 import React from 'react'
 import { FlatList, RefreshControl, View } from 'react-native'
 
 export default function Index() {
+    const router = useRouter()
     const { products, getNextPage, isRefreshing, refreshProducts } = useProductFetch()
 
     return (
@@ -25,7 +27,7 @@ export default function Index() {
             />
             <FloatingActionButton
                 iconName='add'
-                onPress={() => console.log('Agregando nuevo producto')}
+                onPress={() => router.push('product/new')}
             />
         </>
     )
