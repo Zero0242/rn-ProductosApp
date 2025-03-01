@@ -5,11 +5,20 @@ export interface Product {
 	description: string;
 	slug: string;
 	stock: number;
-	sizes: string[];
+	sizes: Sizes[];
 	gender: Gender;
-	tags: Tag[];
+	tags: string[];
 	images: string[];
 	user: User;
+}
+
+export enum Sizes {
+	XS = "XS",
+	S = "S",
+	M = "M",
+	L = "L",
+	XL = "XL",
+	XXL = "XXL",
 }
 
 export enum Gender {
@@ -18,27 +27,10 @@ export enum Gender {
 	Women = "women",
 }
 
-export enum Tag {
-	Shirt = "shirt",
-	Sweatshirt = "sweatshirt",
-}
-
 export interface User {
 	id: string;
-	email: Email;
-	fullName: FullName;
+	email: string;
+	fullName: string;
 	isActive: boolean;
-	roles: Role[];
-}
-
-export enum Email {
-	Test1GoogleCOM = "test1@google.com",
-}
-
-export enum FullName {
-	JuanCarlos = "Juan Carlos",
-}
-
-export enum Role {
-	Admin = "admin",
+	roles: string[];
 }
