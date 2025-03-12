@@ -1,6 +1,10 @@
-import { Field } from '@/src/presentation/shared'
+import { Gender, Sizes } from '@/src/core/products'
+import { Field, MultiSelectButton } from '@/src/presentation/shared'
 import React from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
+
+const sizes: Sizes[] = Object.values(Sizes)
+const genders: Gender[] = Object.values(Gender)
 
 export default function New() {
     return (
@@ -24,6 +28,16 @@ export default function New() {
                     style={{ flex: 1 }}
                 />
             </View>
+            <Text style={{ marginVertical: 10 }}>Tallas</Text>
+            <MultiSelectButton
+                onSelectionChange={(selected) => console.log(selected)}
+                options={sizes}
+            />
+            <Text style={{ marginVertical: 10 }}>Género</Text>
+            <MultiSelectButton
+                onSelectionChange={(selected) => console.log(selected)}
+                options={genders}
+            />
         </ScrollView>
     )
 }
