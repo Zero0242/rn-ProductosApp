@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TextInput, TextInputProps } from 'react-native'
+import { StyleSheet, Text, TextInput, TextInputProps, View } from 'react-native'
 
 interface Props extends TextInputProps {
     errorText?: string
@@ -7,13 +7,13 @@ interface Props extends TextInputProps {
 
 export function Field({ errorText, style, ...props }: Props) {
     return (
-        <>
+        <View style={{ flexWrap: 'wrap', flex: 1 }}>
             <TextInput
                 style={[styles.textInput, style]}
                 {...props}
             />
             {errorText && <Text style={styles.errorText} numberOfLines={2}>{errorText}</Text>}
-        </>
+        </View>
     )
 }
 

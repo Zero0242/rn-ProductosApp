@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        gap: 10,
         marginVertical: 10,
     },
     button: {
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: '#f0f0f0',
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: '#b6b6b6',
     },
     selectedButton: {
         backgroundColor: '#007bff',

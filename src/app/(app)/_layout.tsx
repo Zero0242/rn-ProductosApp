@@ -28,7 +28,7 @@ export default function Layout() {
             <Stack.Screen
                 name='product/new'
                 options={{
-                    title: 'Agregar',
+                    title: 'Agregar Producto',
                     headerTitleAlign: 'center',
                     headerTitleStyle: { fontSize: 15 }
                 }}
