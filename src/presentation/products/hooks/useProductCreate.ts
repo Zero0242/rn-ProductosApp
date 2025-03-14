@@ -1,3 +1,5 @@
+import { Product, ProductActions } from "@/src/core/products";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { toast } from "sonner-native";
 import * as Yup from "yup";
@@ -16,17 +18,21 @@ const createProductSchema = Yup.object().shape({
 });
 
 export const useProductCreate = () => {
-	// const queryClient = useQueryClient();
-	// const mutation = useMutation({});
+	const queryClient = useQueryClient();
+	const mutation = useMutation({
+		mutationFn: (data: Product) => ProductActions.createOrUpdateProduct(data),
+		onSuccess(data) {
+			console.log("values", data);
+			toast.success("Producto creado con exito");
+			// * Tanstack validations
+			queryClient.invalidateQueries({
+				queryKey: ["products", "infinite", "q"],
+			});
+			queryClient.setQueryData(["product", "single", data.id], data);
+		},
+	});
 
-	const {
-		values,
-		handleSubmit,
-		handleChange,
-		setFieldValue,
-		errors,
-		resetForm,
-	} = useFormik({
+	const formik = useFormik({
 		validationSchema: createProductSchema,
 		validateOnMount: false,
 		validateOnChange: false,
@@ -39,20 +45,16 @@ export const useProductCreate = () => {
 			slug: "",
 			gender: "kid",
 		},
-		onSubmit: (values) => {
-			console.log("values", values);
-			toast.success("Hola mundo");
-			resetForm();
-		},
+		onSubmit: (values) => mutation.mutate(values as any),
 	});
 
 	return {
 		// * Properties
-		values,
-		errors,
+		values: formik.values,
+		errors: formik.errors,
 		// * Methods
-		handleSubmit,
-		handleChange,
-		setFieldValue,
+		handleSubmit: formik.handleSubmit,
+		handleChange: formik.handleChange,
+		setFieldValue: formik.setFieldValue,
 	};
 };
