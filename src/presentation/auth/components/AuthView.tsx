@@ -1,14 +1,16 @@
 import React, { PropsWithChildren } from 'react';
-import { Image, Keyboard, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Image, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 
 export function AuthView({ children }: PropsWithChildren) {
     return (
         <>
-            <StatusBar animated hidden />
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                <KeyboardAvoidingView
+                    className='flex-1 px-5 justify-center items-start'
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                     <Image
-                        style={styles.image}
+                        className='w-[200px] h-[200px] -top-5 -right-5 absolute'
+                        /* style={styles.image} */
                         source={require('@/assets/images/react-logo.png')}
                     />
                     {children}
@@ -18,18 +20,3 @@ export function AuthView({ children }: PropsWithChildren) {
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        paddingHorizontal: 20
-    },
-    image: {
-        width: 200,
-        height: 200,
-        position: 'absolute',
-        top: -20,
-        right: -20
-    }
-})

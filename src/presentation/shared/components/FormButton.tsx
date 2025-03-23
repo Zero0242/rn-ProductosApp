@@ -15,9 +15,9 @@ export function FormButton({ children, onPress }: Props) {
 
     return (
         <Pressable
-            style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1, ...styles.button })}
+            className='bg-blue-700 w-full p-4 my-2 justify-center items-center rounded-3xl opacity-100 active:opacity-80'
             onPress={handlePress}>
-            <Text style={styles.buttonText}>
+            <Text className='text-white' style={styles.buttonText}>
                 {children}
             </Text>
         </Pressable>
@@ -25,14 +25,7 @@ export function FormButton({ children, onPress }: Props) {
 }
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: 'blue',
-        width: '100%',
-        padding: 15, marginVertical: 10,
-        justifyContent: 'center', alignItems: 'center', borderRadius: 20
-    },
     buttonText: {
         fontFamily: 'SpaceMono',
-        color: 'white'
     }
 })
