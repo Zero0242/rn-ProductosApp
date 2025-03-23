@@ -11,6 +11,7 @@ const createProductSchema = Yup.object().shape({
 	price: Yup.string().required("Este campo es obligatorio"),
 	stock: Yup.string().required("Este campo es obligatorio"),
 	gender: Yup.string().required("Este campo es obligatorio"),
+	images: Yup.array().of(Yup.string()).optional(),
 	sizes: Yup.array()
 		.of(Yup.string())
 		.min(1, "Debe seleccionar al menos una talla")
@@ -35,6 +36,7 @@ export const useProductCreate = () => {
 			sizes: [],
 			slug: "",
 			gender: "kid",
+			images: [],
 		},
 		onSubmit: () => onSubmitAction(),
 	});

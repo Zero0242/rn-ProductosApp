@@ -3,7 +3,7 @@ import { PickerPlugin } from '@/src/helpers/plugins'
 import { useProductCreate } from '@/src/presentation/products'
 import { Field, FormButton, MultiSelectButton } from '@/src/presentation/shared'
 import { Picker } from '@react-native-picker/picker'
-import React, { useState } from 'react'
+import React from 'react'
 import { FlatList, Image, ScrollView, Text } from 'react-native'
 
 const sizes: Sizes[] = Object.values(Sizes)
@@ -12,12 +12,11 @@ const genders: Gender[] = Object.values(Gender)
 
 
 export default function New() {
-    const [images, setImages] = useState<{ imagePath: string, name: string }[]>([])
     const { values, errors, handleChange, handleSubmit, setFieldValue } = useProductCreate()
 
     async function onPickImage() {
         const results = await PickerPlugin.pickMultiImages()
-        setImages(results)
+        setFieldValue('images', results.map(e => e.imagePath))
     }
 
     return (
@@ -26,13 +25,13 @@ export default function New() {
                 Seleccionar Imagenes
             </FormButton>
             {
-                images.length !== 0 &&
+                values.images.length !== 0 &&
                 <FlatList
-                    data={images}
+                    data={values.images}
                     keyExtractor={(image, index) => image + index.toString()}
                     renderItem={({ item }) => <Image
-                        key={item.imagePath}
-                        source={{ uri: item.imagePath }}
+                        key={item}
+                        source={{ uri: item }}
                         className='h-[300px] w-screen shadow-sm p-2 rounded-lg'
                     />}
                     /* Modo Carrucel + Snapping */

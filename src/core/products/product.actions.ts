@@ -1,7 +1,7 @@
-import { envs } from "@/src/config";
 import { isAxiosError } from "axios";
 import { apiClient } from "../api";
 import { Product } from "./interfaces/product";
+import { ProductUtils } from "./product.utils";
 
 export class ProductActions {
 	static async getProducts(
@@ -12,22 +12,25 @@ export class ProductActions {
 			`/api/products?limit=${limit}&offset=${page * limit}`
 		);
 
-		return data.map(mapProduct);
+		return data.map(ProductUtils.mapProduct);
 	}
 
 	static async getOneProduct(uid: string): Promise<Product> {
 		const { data } = await apiClient.get<Product>(`/api/products/${uid}`);
 
-		return mapProduct(data);
+		return ProductUtils.mapProduct(data);
 	}
 
 	/// * =======================================================
 	/// * Product Mutations
 	/// * =======================================================
 
-	static createOrUpdateProduct(product: Partial<Product>): Promise<Product> {
-		product.price = safeParseInt(product.price);
-		product.stock = safeParseInt(product.stock);
+	static async createOrUpdateProduct(
+		product: Partial<Product>
+	): Promise<Product> {
+		product.price = ProductUtils.safeParseInt(product.price);
+		product.stock = ProductUtils.safeParseInt(product.stock);
+		product.images = await ProductUtils.processImages(product.images ?? []);
 
 		if (product.id) {
 			return ProductActions.updateProduct(product);
@@ -36,12 +39,12 @@ export class ProductActions {
 	}
 
 	private static async createProduct(product: Partial<Product>) {
-		const { images: __, id: _, ...rest } = product;
+		const { id: _, ...rest } = product;
 		try {
 			const { data } = await apiClient.post<Product>(`/api/products`, {
 				...rest,
 			});
-			return mapProduct(data);
+			return ProductUtils.mapProduct(data);
 		} catch (error) {
 			console.error(`Error al crear: ${error}`);
 			if (isAxiosError(error)) {
@@ -59,7 +62,7 @@ export class ProductActions {
 				...rest,
 			});
 
-			return mapProduct(data);
+			return ProductUtils.mapProduct(data);
 		} catch (error) {
 			console.error(`Error al actualizar: ${error}`);
 			if (isAxiosError(error)) {
@@ -68,18 +71,4 @@ export class ProductActions {
 			throw new Error(`No se pudo actualizar el producto con id ${id}`);
 		}
 	}
-}
-
-// * Mappers
-
-function mapProduct(product: Product): Product {
-	return {
-		...product,
-		images: product.images.map((e) => `${envs.API_URL}/api/files/product/${e}`),
-	};
-}
-
-function safeParseInt(value: any): number {
-	const num = Number(value);
-	return isNaN(num) ? 0 : num;
 }
