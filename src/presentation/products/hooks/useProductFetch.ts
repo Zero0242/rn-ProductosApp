@@ -6,7 +6,7 @@ export const useProductFetch = () => {
 	const queryClient = useQueryClient();
 	const [isRefreshing, setIsRefreshing] = useState(false);
 	const { data, isLoading, fetchNextPage } = useInfiniteQuery({
-		staleTime: 1000 * 60 * 60,
+		staleTime: 1000 * 60 * 5,
 		initialPageParam: 1,
 		queryKey: ["products", "infinite", "q"],
 		queryFn: (params) => ProductActions.getProducts(params.pageParam),
