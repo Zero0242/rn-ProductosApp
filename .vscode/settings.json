@@ -1,10 +1,9 @@
 {
-	"editor.formatOnSave": true,
-	"editor.codeActionsOnSave": {
-		"source.organizeImports": "always",
-		"source.organizeLinkDefinitions": "always",
-		"source.addMissingImports.ts": "always",
-		"source.fixAll.ts": "always",
-		"source.sortImports": "always"
-	}
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.addMissingImports.ts": "always",
+    "source.fixAll.ts": "always",
+    "source.organizeImports": "always",
+    "source.sortImports": "always"
+  }
 }
