@@ -41,7 +41,6 @@ export class ProductActions {
 			const { data } = await apiClient.post<Product>(`/api/products`, {
 				...rest,
 			});
-
 			return mapProduct(data);
 		} catch (error) {
 			console.error(`Error al crear: ${error}`);

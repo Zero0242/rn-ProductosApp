@@ -21,15 +21,6 @@ export const useProductCreate = () => {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
 		mutationFn: (data: Product) => ProductActions.createOrUpdateProduct(data),
-		onSuccess(data) {
-			console.log("values", data);
-			toast.success("Producto creado con exito");
-			// * Tanstack validations
-			queryClient.invalidateQueries({
-				queryKey: ["products", "infinite", "q"],
-			});
-			queryClient.setQueryData(["product", "single", data.id], data);
-		},
 	});
 
 	const formik = useFormik({
@@ -45,8 +36,22 @@ export const useProductCreate = () => {
 			slug: "",
 			gender: "kid",
 		},
-		onSubmit: (values) => mutation.mutate(values as any),
+		onSubmit: () => onSubmitAction(),
 	});
+
+	async function onSubmitAction() {
+		const data = await mutation.mutateAsync(formik.values as any);
+		if (data) {
+			formik.resetForm();
+			console.log("values", data);
+			toast.success("Producto creado con exito");
+			// * Tanstack validations
+			queryClient.invalidateQueries({
+				queryKey: ["products", "infinite", "q"],
+			});
+			queryClient.setQueryData(["product", "single", data.id], data);
+		}
+	}
 
 	return {
 		// * Properties
