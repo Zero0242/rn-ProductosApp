@@ -29,7 +29,11 @@ export default function ProductPage() {
             <FlatList
                 data={data?.images}
                 keyExtractor={(image, index) => image + index.toString()}
-                renderItem={({ item }) => <Image src={item} style={{ height: 300, width: width }} />}
+                renderItem={({ item }) => <Image
+                    key={item}
+                    src={item}
+                    className='h-[300px] w-screen shadow-sm p-2 rounded-lg'
+                />}
                 /* Modo Carrucel + Snapping */
                 horizontal
                 showsHorizontalScrollIndicator={false}

@@ -1,7 +1,7 @@
 import { MaterialIcons as Icon } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import React from "react";
-import { Alert, Pressable, StyleSheet } from 'react-native';
+import { Alert, Pressable } from 'react-native';
 import { useAuthStore } from '../store/useAuthStore';
 
 export function LogoutButton() {
@@ -26,20 +26,10 @@ export function LogoutButton() {
 
     return (
         <Pressable
-            style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1, ...styles.baseButton })}
+            className='flex-row gap-1 py-2 px-4 bg-red-500 rounded-full opacity-100 active:opacity-80'
             onPress={() => handleLogout()}>
             <Icon name='exit-to-app' size={20} color={'white'} />
         </Pressable>
     )
 }
 
-const styles = StyleSheet.create({
-    baseButton: {
-        flexDirection: 'row',
-        gap: 2,
-        paddingVertical: 8,
-        paddingHorizontal: 15,
-        backgroundColor: 'red',
-        borderRadius: 100
-    }
-})
