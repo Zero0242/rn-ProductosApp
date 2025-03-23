@@ -1,1 +1,2 @@
-export * from './storage-plugin';
+export * from "./picker-plugin";
+export * from "./storage-plugin";

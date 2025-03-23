@@ -1,9 +1,10 @@
 import { Gender, Sizes } from '@/src/core/products'
+import { PickerPlugin } from '@/src/helpers/plugins'
 import { useProductCreate } from '@/src/presentation/products'
 import { Field, FormButton, MultiSelectButton } from '@/src/presentation/shared'
 import { Picker } from '@react-native-picker/picker'
-import React from 'react'
-import { ScrollView, Text } from 'react-native'
+import React, { useState } from 'react'
+import { FlatList, Image, ScrollView, Text } from 'react-native'
 
 const sizes: Sizes[] = Object.values(Sizes)
 const genders: Gender[] = Object.values(Gender)
@@ -11,10 +12,37 @@ const genders: Gender[] = Object.values(Gender)
 
 
 export default function New() {
+    const [images, setImages] = useState<{ imagePath: string, name: string }[]>([])
     const { values, errors, handleChange, handleSubmit, setFieldValue } = useProductCreate()
+
+    async function onPickImage() {
+        const results = await PickerPlugin.pickMultiImages()
+        setImages(results)
+    }
 
     return (
         <ScrollView className='flex-1 px-2'>
+            <FormButton onPress={() => onPickImage()}>
+                Seleccionar Imagenes
+            </FormButton>
+            {
+                images.length !== 0 &&
+                <FlatList
+                    data={images}
+                    keyExtractor={(image, index) => image + index.toString()}
+                    renderItem={({ item }) => <Image
+                        key={item.imagePath}
+                        source={{ uri: item.imagePath }}
+                        className='h-[300px] w-screen shadow-sm p-2 rounded-lg'
+                    />}
+                    /* Modo Carrucel + Snapping */
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled
+                    snapToAlignment="center"
+                    decelerationRate="fast"
+                />
+            }
             <Field
                 placeholder="Nombre del producto"
                 value={values.title}
