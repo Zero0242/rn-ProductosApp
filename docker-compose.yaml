@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  app:
+    depends_on:
+      - db
+    container_name: nest-app
+    restart: always
+    image: klerith/flutter-backend-teslo-shop:latest
+    ports:
+      - 3000:3000
+    environment:
+      APP_VERSION: "1.0.0"
+      STAGE: "dev"
+      DB_PASSWORD: 123456
+      DB_NAME: react_database
+      DB_HOST: react_database
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      PORT: 3000
+      HOST_API: http://localhost:3000/api
+      JWT_SECRET: Est3EsMISE3Dsecreto32s
+
+  db:
+    image: postgres:16.1
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: react_database
+    container_name: react_database
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes:
+  postgres-db:
+    external: false
