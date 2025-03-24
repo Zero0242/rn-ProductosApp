@@ -5,7 +5,7 @@
 
 # Proyecto Productos
 
-Remake de app del curso de ReactNative con Community CLI
+Remake de app del curso de ReactNative con Community CLI [Udemy](https://www.udemy.com/course/react-native-fh/)
 
 > Creado en React Native
 
